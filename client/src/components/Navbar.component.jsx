@@ -26,13 +26,13 @@ const Navbar = () => {
                 </Link>
 
                 {/* Link Sign In */}
-                <Link to={"sign-in"} className="btn bg-blue-900 text-white hover:opacity-80 w-26">
+                <Link to={"sign-in"} className="btn bg-blue-900 text-white w-26">
                     Sign In
                 </Link>
 
                 {/* Link Sign Out */}
-                <Link to={"sign-out"} className="hidden btn bg-gray-300 text-blue-900 w-26 hover:opacity-80 md:block">
-                    Sign Out
+                <Link to={"sign-up"} className="hidden btn bg-gray-300 text-blue-900 w-26 md:block">
+                    Sign up
                 </Link>
             </div>
         </nav>
