@@ -7,7 +7,7 @@ const Search = ({ isVisibility }) => {
             <input type="text" placeholder="Search" className="w-full input rounded-full md:pl-10"/>
             
             {/* Icon Search */}
-            <div className="absolute right-[8%] top-1/2 -translate-y-1/2 md:left-3 md:pointer-events-none">
+            <div className="absolute right-[8%] top-1/2 -translate-y-1/2 md:left-3 md:pointer-events-none text-blue-800">
                 <IconSearch />
             </div>
         </div>
