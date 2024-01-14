@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { IconSearch, IconWrite } from './Icon.component'
 import Logo from './Logo.component'
 import { Link } from 'react-router-dom'
+import Search from './Search.component'
 
 const Navbar = () => {
     const[searchBoxVisibility, setSearchBoxVisibility] = useState(false)
@@ -10,14 +11,7 @@ const Navbar = () => {
         <nav className="navbar">
             <Logo />
             
-            <div className={`w-full absolute left-0 top-full mt-0.5 py-3 px-[5vw] md:relative md:w-auto md:inset-0 md:p-0 md:show ${(searchBoxVisibility ? "show" : "hide")}`}>
-                <input type="text" placeholder="Search" className="w-full input rounded-full md:pl-10"/>
-                
-                {/* Icon Search */}
-                <div className="absolute right-[8%] top-1/2 -translate-y-1/2 md:left-3 md:pointer-events-none">
-                    <IconSearch />
-                </div>
-            </div>
+            <Search isVisibility={ searchBoxVisibility }/>
 
             <div className="flex justify-end items-center gap-5 w-full md:w-3/4">
                 {/* Button Search */}
