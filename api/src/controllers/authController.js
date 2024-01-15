@@ -1,23 +1,24 @@
-import { errorCustomHandler } from "../utils/index.js"
+import { hashString } from "../utils/index.js"
+
 
 export const signInController = (req, res, next) => {
-    const { email, password } = req.body
+    
+}
 
-    if(!email || !password) return next(errorCustomHandler(400, "Required Field Missing"))
+export const signUpController = async (req, res, next) => {
+    const { fullName, username, email, password } = req.body
 
     try{
-        return res.json({
+        const hasedPassword = await hashString(password)
+        
+        res.status(201).json({
             success: true,
-            statusCode: 200,
-            message: "Sign In Success"
+            statusCode: 201,
+            message: "Created is succesfully"
         })
+
     }catch(err){
         next(err)
     }
-}
 
-export const signUpController = (req, res) => {
-    res.json({
-        data: "Sign Up"
-    })
 }
