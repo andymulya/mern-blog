@@ -1,5 +1,5 @@
 import User from "../models/User.js"
-import { isExists } from "../services/userServices.js"
+import { create, isExists } from "../services/userServices.js"
 import { createToken, errorCustomHandler, hashString } from "../utils/index.js"
 
 
@@ -11,25 +11,16 @@ export const signUpController = async (req, res, next) => {
     const { fullName, username, email, password } = req.body
 
     try{
-        const hashedPassword = await hashString(password)
 
-        const user = await User.create({
-            personal_info: {
-                fullName,
-                email,
-                username,
-                password: hashedPassword
-            }
-        })
+        const user = await create(fullName, username, email, password)
 
-        const { password: hashedPassword2, email: hashedEmail2, ...data } = user._doc.personal_info
         const token = createToken({ userId: user._id })
 
         res.status(201).json({
             success: true,
             statusCode: 201,
             message: "Created is succesfully",
-            data
+            user
         })
 
     }catch(err){

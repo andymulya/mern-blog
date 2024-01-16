@@ -1,7 +1,25 @@
 import User from "../models/User.js"
+import { hashString } from "../utils/index.js"
 
-export const create = () => {
+export const create = async (fullName, username, email, password) => {
+    const hashedPassword = await hashString(password)
 
+    const user = await User.create({
+        personal_info: {
+            fullName,
+            email,
+            username,
+            password: hashedPassword
+        }
+    })
+
+    const { personal_info, ...any} = user._doc
+    const { password: hashedPassword2, ...data } = personal_info
+
+    return {
+        personal_data: data,
+        ...any
+    }
 }
 
 export const isExists = async (key, value) => {
