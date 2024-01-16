@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export const errorCustomHandler = (statusCode, message) => {
     const err = new Error()
@@ -8,6 +9,8 @@ export const errorCustomHandler = (statusCode, message) => {
 
     return err
 }
+
+export const createToken = (value) => jwt.sign(value, process.env.JWT_SECRET)
 
 export const hashString = async (val) => {
     try{
