@@ -29,3 +29,13 @@ export const compareString = async (val, hashVal) => {
         if(err) throw err
     }
 }
+
+export const formatDataToSend = (values) => {
+    const { personal_info, ...any} = values
+    const { password: hashedPassword2, ...data } = personal_info
+
+    return {
+        personal_data: data,
+        ...any
+    }
+}

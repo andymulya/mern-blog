@@ -1,5 +1,5 @@
 import User from "../models/User.js"
-import { hashString } from "../utils/index.js"
+import { formatDataToSend, hashString } from "../utils/index.js"
 
 export const create = async (fullName, username, email, password) => {
     const hashedPassword = await hashString(password)
@@ -13,13 +13,7 @@ export const create = async (fullName, username, email, password) => {
         }
     })
 
-    const { personal_info, ...any} = user._doc
-    const { password: hashedPassword2, ...data } = personal_info
-
-    return {
-        personal_data: data,
-        ...any
-    }
+    return formatDataToSend(user._doc)
 }
 
 export const isExists = async (key, value) => {

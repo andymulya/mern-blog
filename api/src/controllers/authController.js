@@ -13,7 +13,6 @@ export const signUpController = async (req, res, next) => {
     try{
 
         const user = await create(fullName, username, email, password)
-
         const token = createToken({ userId: user._id })
 
         res.status(201).json({
