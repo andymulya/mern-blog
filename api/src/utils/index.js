@@ -31,11 +31,11 @@ export const compareString = async (val, hashVal) => {
 }
 
 export const formatDataToSend = (values) => {
-    const { personal_info, ...any} = values
-    const { password: hashedPassword2, ...data } = personal_info
+    const { personal_info, ...data1} = values
+    const { password: hashedPassword2, ...data2 } = personal_info
 
     return {
-        personal_data: data,
-        ...any
+        personal_data: data2,
+        ...data1
     }
 }

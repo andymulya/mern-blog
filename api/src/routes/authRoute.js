@@ -1,10 +1,10 @@
 import express from 'express'
 import { signInController, signUpController } from '../controllers/authController.js'
-import { signUpValidation } from '../middlewares/index.js'
+import { signInValidation, signUpValidation } from '../middlewares/index.js'
 
 const router = express.Router()
 
-router.post('/sign-in', signInController)
+router.post('/sign-in', signInValidation, signInController)
 router.post('/sign-up', signUpValidation, signUpController)
 
 export default router
