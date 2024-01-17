@@ -2,6 +2,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import Layout from './layouts/Layout'
 import AuthForm from './pages/AuthForm.page'
 import Write from './pages/Write.page'
+import axios from 'axios'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -12,6 +13,8 @@ const router = createBrowserRouter(
     </Route>
   )
 )
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 export default function App() {
 

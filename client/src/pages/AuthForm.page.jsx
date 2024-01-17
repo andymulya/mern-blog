@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom"
 import toast, { Toaster } from 'react-hot-toast';
 import TextInputIcon from "../components/TextInputIcon.component"
@@ -6,10 +8,12 @@ import Divider from "../components/Divider.component"
 import { AnimationWrapper } from "../common/Animations"
 import { getDataForm } from "../utils"
 import { authUser } from "../services/baseApi"
-import { useState } from "react";
+import { handleAuthUser } from "../redux/slices/userSlice"
+
 
 export default function AuthForm(){
     const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch()
     const { pathname } = useLocation()
     const type = pathname.slice(1)
 
@@ -22,13 +26,16 @@ export default function AuthForm(){
         try{
             setIsLoading(true)
             const user = await authUser(pathname, formData)
+            dispatch(handleAuthUser(user.data))
             toast.success(user.data.message)
+
             setIsLoading(false)
         }catch(err){
-            setIsLoading(false)
             toast.error(err.response.data.message)
+            setIsLoading(false)
         }
     }
+
 
     const handleOauth = (e) => {
         e.preventDefault()
@@ -37,6 +44,7 @@ export default function AuthForm(){
     return (
         <AnimationWrapper keyValue={ type }>
             <section className={`h-cover flex items-center justify-center ${(type !== "sign-in") && "mb-10"}`}>
+                {/* Untuk notify */}
                 <Toaster toastOptions={{
                     success: {
                         className: "bg-green-100 border border-green-500 font-bold",
@@ -47,19 +55,20 @@ export default function AuthForm(){
                         position: "bottom-right"
                     }
                 }} />
+
                 <form id="form" className="w-[80%] max-w-[450px]" onSubmit={(e) => handleSubmitForm(e)}>
                     <h1 className="text-center font-bold my-10 text-4xl capitalize">{ (type == "sign-in") ? "Welcome Back" : "Join us Today" }</h1>
 
-                    {/* Feature Auth */}
+                    {/* Input Form */}
                     <section className="flex flex-col gap-4">
                         {
                             (type != "sign-in") && 
                             <>
-                                <TextInputIcon type={"text"} name={"fullName"} id={"fullName"} placeholder={"ful name"}>
+                                <TextInputIcon type={"text"} name={"fullName"} id={"fullName"} placeholder={"ful name"} >
                                     <IconUser />
                                 </TextInputIcon>
 
-                                <TextInputIcon type={"text"} name={"username"} id={"username"} placeholder={"username"}>
+                                <TextInputIcon type={"text"} name={"username"} id={"username"} placeholder={"username"} minLength={ 6 } maxLength={ 15 } >
                                     <IconUser />
                                 </TextInputIcon>
                             </>
@@ -67,16 +76,15 @@ export default function AuthForm(){
 
                         
 
-                        <TextInputIcon type={"email"} name={"email"} id={"email"} placeholder={"email"}>
+                        <TextInputIcon type={"email"} name={"email"} id={"email"} placeholder={"email"}  >
                             <IconEmail />
                         </TextInputIcon>
 
-                        <TextInputIcon type={"password"} name={"password"} id={"password"} placeholder={"password"}>
+                        <TextInputIcon type={"password"} name={"password"} id={"password"} placeholder={"password"} minLength={ 6 } maxLength={ 15 } >
                             <IconPassword />
                         </TextInputIcon>
 
                         <button disabled={ isLoading } className="btn bg-blue-700 text-white mt-4 uppercase w-[90%] mx-auto disabled:opacity-75">{ (!isLoading) ? type.replace("-", " ") : "Loading" }</button>
-
                     </section>
                     
                     <Divider title={ "or" } />

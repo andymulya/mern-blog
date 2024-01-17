@@ -23,7 +23,7 @@ export const signUpValidation = async (req, res, next) => {
     if(!fullName || !username || !email || !password) return next(errorCustomHandler(400, "Required field missing"))
 
     // validasi ketika username tidak memenuhi syarat
-    if(!usernameRegex.test(username)) return next(errorCustomHandler(400, "Username should be 6 to 15 characters long, and without any spaces"))
+    if(!usernameRegex.test(username)) return next(errorCustomHandler(400, "Username should be 6 to 15 characters long, without any special characters and without any spaces"))
 
     // validasi ketika email tidak memenuhi syarat
     if(!emailRegex.test(email)) return next(errorCustomHandler(400, "Email is invalid"))

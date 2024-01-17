@@ -15,6 +15,7 @@ export const signInController = async (req, res, next) => {
             success: true,
             statusCode: 201,
             message: "Sign in is succesfully",
+            access_token: token,
             data
         })
         
@@ -36,6 +37,7 @@ export const signUpController = async (req, res, next) => {
             success: true,
             statusCode: 201,
             message: "Created is succesfully",
+            access_token: token,
             data: { ...user }
         })
 
