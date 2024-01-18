@@ -28,7 +28,7 @@ export default function AuthForm(){
             const user = await authUser(pathname, formData)
             dispatch(handleAuthUser(user.data))
             toast.success(user.data.message)
-
+            
             setIsLoading(false)
         }catch(err){
             toast.error(err.response.data.message)
@@ -40,7 +40,7 @@ export default function AuthForm(){
     const handleOauth = (e) => {
         e.preventDefault()
     }
-    
+
     return (
         <AnimationWrapper keyValue={ type }>
             <section className={`h-cover flex items-center justify-center ${(type !== "sign-in") && "mb-10"}`}>
@@ -80,7 +80,7 @@ export default function AuthForm(){
                             <IconEmail />
                         </TextInputIcon>
 
-                        <TextInputIcon type={"password"} name={"password"} id={"password"} placeholder={"password"} minLength={ 6 } maxLength={ 15 } >
+                        <TextInputIcon type={"password"} name={"password"} id={"password"} placeholder={"password"} minLength={ (type != "sig-in") ? 6 : undefined} maxLength={ (type != "sign-in") ? 15 : undefined } >
                             <IconPassword />
                         </TextInputIcon>
 
@@ -89,7 +89,7 @@ export default function AuthForm(){
                     
                     <Divider title={ "or" } />
 
-                    {/* Feature Oauth */}
+                    {/* Oauth */}
                     <section>
                         <button disabled={ isLoading } className=" btn w-[90%] gap-3 flex items-center justify-center mx-auto border border-black font-bold text-lg hover:bg-slate-100 disabled:opacity-75" onClick={(e) => handleOauth(e)}>
                             <IconGoogle w={ 30 } h={ 30 } />

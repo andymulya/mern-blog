@@ -10,7 +10,8 @@ export const errorCustomHandler = (statusCode, message) => {
     return err
 }
 
-export const createToken = (value) => jwt.sign(value, process.env.JWT_SECRET)
+export const generateToken = (value) => jwt.sign(value, process.env.JWT_SECRET)
+export const compareToken = (value) => jwt.verify(value, process.env.JWT_SECRET)
 
 export const hashString = async (val) => {
     try{
@@ -31,11 +32,11 @@ export const compareString = async (val, hashVal) => {
 }
 
 export const formatDataToSend = (values) => {
-    const { personal_info, ...data1} = values
-    const { password: hashedPassword2, ...data2 } = personal_info
+    const { personalInfo, ...data1} = values
+    const { password: hashedPassword2, ...data2 } = personalInfo
 
     return {
-        personal_data: data2,
+        personalInfo: data2,
         ...data1
     }
 }

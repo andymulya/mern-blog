@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 
 const userSchema = mongoose.Schema({
-    personal_info : {
+    personalInfo : {
         fullName: {
             type: String,
             required: true,
@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
             type: String,
             required: true,
         },
-        profile_img: {
+        profileImg: {
             type: String,
             default: "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
         },
@@ -33,7 +33,7 @@ const userSchema = mongoose.Schema({
             default: ""
         }
     },
-    social_links: {
+    socialLinks: {
         youtube: {
             type: String,
             default: "",
@@ -59,17 +59,17 @@ const userSchema = mongoose.Schema({
             default: "",
         }
     },
-    account_info: {
-        total_post: {
+    accountInfo: {
+        totalPost: {
             type: Number,
             default: 0
         },
-        total_reads: {
+        totalReads: {
             type: Number,
             default: 0
         }
     },
-    google_auth: {
+    googleAuth: {
         type: Boolean,
         default: false
     },

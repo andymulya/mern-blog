@@ -16,7 +16,7 @@ const TextInputIcon = ({ type, name, id, placeholder, minLength, maxLength, styl
             {
                 // Check icon eye for input password
                 (type == "password") && 
-                <div className="input-icon left-[auto] right-4" onClick={() => setPasswordVisible((currentVal) => !currentVal)}>
+                <div className="input-icon left-[auto] right-4 cursor-pointer" onClick={() => setPasswordVisible((currentVal) => !currentVal)}>
                     {
                         (passwordVisible) ? <IconEyeSlash /> : <IconEye />
                     }

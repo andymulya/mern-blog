@@ -7,7 +7,7 @@ export const create = async (fullName, username, email, password) => {
         const hashedPassword = await hashString(password)
 
         const user = await User.create({
-            personal_info: {
+            personalInfo: {
                 fullName,
                 email,
                 username,
@@ -15,7 +15,7 @@ export const create = async (fullName, username, email, password) => {
             }
         })
 
-        return formatDataToSend(user._doc)
+        return user
 
     }catch(err){
         if(err) throw err
@@ -27,10 +27,10 @@ export const isExists = async (key, value) => {
     try{
         switch (key) {
             case "email":
-                const email = await User.exists({ "personal_info.email" : value})
+                const email = await User.exists({ "personalInfo.email" : value})
                 return email
             case "username":
-                const username = await User.exists({ "personal_info.username" : value})
+                const username = await User.exists({ "personalInfo.username" : value})
                 return username
             default:
                 throw "Key is not available"

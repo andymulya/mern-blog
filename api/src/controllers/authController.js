@@ -1,22 +1,25 @@
 import { create, findUser, isExists } from "../services/userServices.js"
-import { createToken, errorCustomHandler, formatDataToSend } from "../utils/index.js"
+import { generateToken, errorCustomHandler, formatDataToSend } from "../utils/index.js"
 
 
 export const signInController = async (req, res, next) => {
     const { email } = req.body
 
     try{
-        const user = await findUser({ "personal_info.email": email })
+        const user = await findUser({ "personalInfo.email": email })
 
         const data = formatDataToSend(user._doc)
-        const token = createToken({ userId: user._id })
+        const token = generateToken({ userId: user._id })
 
-        res.status(200).json({
+        res.cookie("access_token", token, { secure: true, httpOnly: true, maxAge: 3600000 }).status(200).json({
             success: true,
             statusCode: 201,
             message: "Sign in is succesfully",
-            access_token: token,
-            data
+            data:{
+                fullName: data.personalInfo.fullName,
+                username: data.personalInfo.username,
+                profileImg: data.personalInfo.profileImg,
+            }
         })
         
     }catch(err){
@@ -29,16 +32,19 @@ export const signUpController = async (req, res, next) => {
     const { fullName, username, email, password } = req.body
 
     try{
-
         const user = await create(fullName, username, email, password)
-        const token = createToken({ userId: user._id })
+        const token = generateToken({ userId: user._id })
+        const data = formatDataToSend(user._doc)
 
-        res.status(201).json({
+        res.cookie("access_token", token, { secure: true, httpOnly: true, maxAge: 3600000 }).status(201).json({
             success: true,
             statusCode: 201,
             message: "Created is succesfully",
-            access_token: token,
-            data: { ...user }
+            data:{
+                fullName: data.personalInfo.fullName,
+                username: data.personalInfo.username,
+                profileImg: data.personalInfo.profileImg,
+            }
         })
 
     }catch(err){
