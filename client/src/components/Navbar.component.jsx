@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import { IconSearch, IconWrite } from './Icon.component'
+import { IconNotify, IconSearch, IconWrite } from './Icon.component'
 import Logo from './Logo.component'
 import { Link } from 'react-router-dom'
 import Search from './Search.component'
 import { useSelector } from 'react-redux'
+import UserNavigationPanel from './UserNavigationPanel.component'
 
 const Navbar = () => {
     const[searchBoxVisibility, setSearchBoxVisibility] = useState(false)
+    const[isUserNavPanel, setIsUserNavPanel] = useState(false)
+
     const { user } = useSelector((state) => state.user)
 
     return (
@@ -14,6 +17,9 @@ const Navbar = () => {
             <Logo />
             
             <Search isVisibility={ searchBoxVisibility }/>
+            {
+                (isUserNavPanel) && <UserNavigationPanel />
+            }
 
             <div className="flex justify-end items-center gap-5 w-full md:w-3/4">
                 {/* Button Search */}
@@ -32,9 +38,19 @@ const Navbar = () => {
                 
                 {
                     (user.token) ?
-                    <div className="bg-red-500 w-10 h-10 rounded-full" /> :
+                    <section className="flex items-center gap-3">
+                        {/* Button notify */}
+                        <Link className="hover:bg-gray-200 link rounded-full p-2 hidden md:block">
+                               <IconNotify />
+                        </Link>
 
-                    <div className="flex gap-3">
+                        {/* Image profile */}
+                        <button className="w-11 h-11 rounded-full bg-blue-500 p-[2px]" onClick={() => setIsUserNavPanel((currentVal) => !currentVal)}>
+                            <img src={ user.profileImg } className="rounded-full object-cover" />
+                        </button>
+                    </section>:
+
+                    <section className="flex gap-3">
                         {/* Link Sign In */}
                         <Link to={"sign-in"} className="btn bg-blue-900 text-white w-26">
                             Sign In
@@ -44,7 +60,7 @@ const Navbar = () => {
                         <Link to={"sign-up"} className="hidden btn bg-gray-300 text-blue-900 w-26 md:block">
                             Sign up
                         </Link>
-                    </div>
+                    </section>
                 }
             </div>
         </nav>

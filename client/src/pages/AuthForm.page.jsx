@@ -46,8 +46,8 @@ export default function AuthForm(){
     return (
         (user.token) ?
         <Navigate to={"/"} />
-        
-        :<AnimationWrapper keyValue={ type }>
+
+        :<AnimationWrapper keyValue={ type } transition={{ duration: 0.5 }}>
             <section className={`h-cover flex items-center justify-center ${(type !== "sign-in") && "mb-10"}`}>
                 {/* Untuk notify */}
                 <Toaster toastOptions={{

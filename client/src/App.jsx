@@ -7,16 +7,23 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { lookInSession } from './services/session'
 import { handleAuthUser } from "./redux/slices/userSlice"
-import Home from './pages/Home.page'
+import Dashboard from './pages/Dashboard.page'
+import Profile from './pages/Profile.page'
+import PrivatePage from './pages/PrivatePage.page'
+import Settings from './pages/Settings.page'
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={ <Layout /> }>
-      <Route index element={ <Home /> } />
+      <Route index element={ <Dashboard /> } />
       <Route path="sign-in" element={<AuthForm />} />
       <Route path="sign-up" element={<AuthForm />} />
-      <Route path="editor" element={<Write />} />
+      <Route element={<PrivatePage />}>
+        <Route path="profile/:user" element={<Profile />} />
+        <Route path="editor" element={<Write />} />
+        <Route path="settings" element={<Settings />} />
+      </Route>
     </Route>
   )
 )
