@@ -10,6 +10,7 @@ import { getDataForm } from "../utils"
 import { authUser } from "../services/baseApi"
 import { handleAuthUser } from "../redux/slices/userSlice"
 import { storeInSession } from "../services/session"
+import { googleAuth } from "../services/firebase/firebaseService"
 
 
 export default function AuthForm(){
@@ -39,8 +40,18 @@ export default function AuthForm(){
     }
 
 
-    const handleOauth = (e) => {
+    const handlegoogleAuth = async (e) => {
         e.preventDefault()
+
+        try{
+            setIsLoading(true)
+            const user = await googleAuth()
+            console.log(user)
+            setIsLoading(false)
+        }catch(err){
+            setIsLoading(false)
+            console.log(err) 
+        }
     }
 
     return (
@@ -96,7 +107,7 @@ export default function AuthForm(){
 
                     {/* Oauth */}
                     <section>
-                        <button disabled={ isLoading } className=" btn w-[90%] gap-3 flex items-center justify-center mx-auto border border-black font-bold text-lg hover:bg-slate-100 disabled:opacity-75" onClick={(e) => handleOauth(e)}>
+                        <button disabled={ isLoading } className=" btn w-[90%] gap-3 flex items-center justify-center mx-auto border border-black font-bold text-lg hover:bg-slate-100 disabled:opacity-75" onClick={(e) => handlegoogleAuth(e)}>
                             <IconGoogle w={ 30 } h={ 30 } />
                             Continue With Google
                         </button>
