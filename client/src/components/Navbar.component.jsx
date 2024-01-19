@@ -9,7 +9,6 @@ import UserNavigationPanel from './UserNavigationPanel.component'
 const Navbar = () => {
     const[searchBoxVisibility, setSearchBoxVisibility] = useState(false)
     const[isUserNavPanel, setIsUserNavPanel] = useState(false)
-
     const { user } = useSelector((state) => state.user)
 
     return (
@@ -17,13 +16,10 @@ const Navbar = () => {
             <Logo />
             
             <Search isVisibility={ searchBoxVisibility }/>
-            {
-                (isUserNavPanel) && <UserNavigationPanel />
-            }
 
             <div className="flex justify-end items-center gap-5 w-full md:w-3/4">
                 {/* Button Search */}
-                <button className={`hover:bg-gray-200 p-3 rounded-full md:hidden ${searchBoxVisibility && "bg-gray-200"}`} onClick={() => setSearchBoxVisibility((currentVal) => !currentVal)}>
+                <button className={`hover:bg-gray-200 p-3 rounded-full md:hidden ${searchBoxVisibility && "bg-gray-200"}`} onClick={() => setSearchBoxVisibility((currentVal) => !currentVal)} >
                     <IconSearch />
                 </button>
 
@@ -45,9 +41,12 @@ const Navbar = () => {
                         </Link>
 
                         {/* Image profile */}
-                        <button className="w-11 h-11 rounded-full bg-blue-500 p-[2px]" onClick={() => setIsUserNavPanel((currentVal) => !currentVal)}>
+                        <button className="w-11 h-11 rounded-full bg-blue-500 p-[2px]" onClick={() => setIsUserNavPanel((currentVal) => !currentVal)} onBlur={() => setTimeout(() => setIsUserNavPanel(false), 200) }>
                             <img src={ user.profileImg } className="rounded-full object-cover" />
                         </button>
+                        {
+                            (isUserNavPanel) && <UserNavigationPanel />
+                        }
                     </section>:
 
                     <section className="flex gap-3">
