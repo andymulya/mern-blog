@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom"
-import toast, { Toaster } from 'react-hot-toast';
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, Navigate, useLocation } from "react-router-dom"
+import toast, { Toaster } from 'react-hot-toast'
 import TextInputIcon from "../components/TextInputIcon.component"
 import { IconEmail, IconGoogle, IconPassword, IconUser } from "../components/Icon.component"
 import Divider from "../components/Divider.component"
@@ -9,14 +9,16 @@ import { AnimationWrapper } from "../common/Animations"
 import { getDataForm } from "../utils"
 import { authUser } from "../services/baseApi"
 import { handleAuthUser } from "../redux/slices/userSlice"
+import { storeInSession } from "../services/session"
 
 
 export default function AuthForm(){
     const [isLoading, setIsLoading] = useState(false)
+    const { user } = useSelector((state) => state.user)
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const type = pathname.slice(1)
-
+    
     const handleSubmitForm = async (e) => {
         e.preventDefault()
 
@@ -27,8 +29,8 @@ export default function AuthForm(){
             setIsLoading(true)
             const user = await authUser(pathname, formData)
             dispatch(handleAuthUser(user.data))
+            storeInSession("data", JSON.stringify(user.data))
             toast.success(user.data.message)
-            
             setIsLoading(false)
         }catch(err){
             toast.error(err.response.data.message)
@@ -42,7 +44,10 @@ export default function AuthForm(){
     }
 
     return (
-        <AnimationWrapper keyValue={ type }>
+        (user.token) ?
+        <Navigate to={"/"} />
+        
+        :<AnimationWrapper keyValue={ type }>
             <section className={`h-cover flex items-center justify-center ${(type !== "sign-in") && "mb-10"}`}>
                 {/* Untuk notify */}
                 <Toaster toastOptions={{

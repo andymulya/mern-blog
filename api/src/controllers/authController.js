@@ -19,6 +19,7 @@ export const signInController = async (req, res, next) => {
                 fullName: data.personalInfo.fullName,
                 username: data.personalInfo.username,
                 profileImg: data.personalInfo.profileImg,
+                token
             }
         })
         
@@ -44,6 +45,7 @@ export const signUpController = async (req, res, next) => {
                 fullName: data.personalInfo.fullName,
                 username: data.personalInfo.username,
                 profileImg: data.personalInfo.profileImg,
+                token
             }
         })
 

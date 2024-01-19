@@ -55,8 +55,7 @@ export const authorization = async (req, res, next) => {
 
     try{
         const decode = compareToken(token)
-        req.user = decode
-        console.log(req.user)
+        req.userId = decode.userId
         next()
     }catch(err){
         res.clearCookie("access_token")

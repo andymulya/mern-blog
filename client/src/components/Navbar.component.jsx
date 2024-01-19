@@ -3,9 +3,11 @@ import { IconSearch, IconWrite } from './Icon.component'
 import Logo from './Logo.component'
 import { Link } from 'react-router-dom'
 import Search from './Search.component'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
     const[searchBoxVisibility, setSearchBoxVisibility] = useState(false)
+    const { user } = useSelector((state) => state.user)
 
     return (
         <nav className="navbar">
@@ -20,20 +22,30 @@ const Navbar = () => {
                 </button>
 
                 {/* Link Write */}
-                <Link to={"/editor"} className="hidden md:flex link text-gray-700 hover:text-blue-700">
-                    <IconWrite />
-                    <span>Write</span>
-                </Link>
+                {
+                    (user.token) &&
+                    <Link to={"/editor"} className="hidden md:flex link text-gray-700 hover:text-blue-700">
+                        <IconWrite />
+                        <span>Write</span>
+                    </Link>
+                }
+                
+                {
+                    (user.token) ?
+                    <div className="bg-red-500 w-10 h-10 rounded-full" /> :
 
-                {/* Link Sign In */}
-                <Link to={"sign-in"} className="btn bg-blue-900 text-white w-26">
-                    Sign In
-                </Link>
-
-                {/* Link Sign Out */}
-                <Link to={"sign-up"} className="hidden btn bg-gray-300 text-blue-900 w-26 md:block">
-                    Sign up
-                </Link>
+                    <div className="flex gap-3">
+                        {/* Link Sign In */}
+                        <Link to={"sign-in"} className="btn bg-blue-900 text-white w-26">
+                            Sign In
+                        </Link>
+    
+                        {/* Link Sign Up */}
+                        <Link to={"sign-up"} className="hidden btn bg-gray-300 text-blue-900 w-26 md:block">
+                            Sign up
+                        </Link>
+                    </div>
+                }
             </div>
         </nav>
     )
