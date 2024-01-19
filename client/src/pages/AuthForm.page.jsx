@@ -46,7 +46,7 @@ export default function AuthForm(){
         try{
             setIsLoading(true)
             const user = await googleAuth()
-            console.log(user)
+            console.log(user.user.accessToken)
             setIsLoading(false)
         }catch(err){
             setIsLoading(false)

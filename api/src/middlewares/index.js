@@ -1,4 +1,5 @@
-import { findUser } from "../services/userServices.js"
+import { getAuth } from "firebase-admin/auth"
+import User from "../models/User.js"
 import { compareString, compareToken, errorCustomHandler } from "../utils/index.js"
 
 export const errorHandler = (err, req, res, next) => {
@@ -36,11 +37,12 @@ export const signInValidation = async (req, res, next) => {
     if(!email || !password) return next(errorCustomHandler(400, "Required field missing"))
 
     try{
-        const user = await findUser({ "personalInfo.email": email })
-        
+        const user = await User.findOne({ "personalInfo.email": email })
         if(!user) return next(errorCustomHandler(500, "Something when wrong"))
+        if(user.googleAuth) return next(errorCustomHandler(403, "Account was created using google. Try logging in with google"))
         const comparePassword = await compareString(password, user.personalInfo.password)
         if(!comparePassword) return next(errorCustomHandler(500, "Something when wrong"))
+
     }catch(err){
         return next(err)
     }
@@ -61,4 +63,27 @@ export const authorization = async (req, res, next) => {
         res.clearCookie("access_token")
         next(err)
     }
+}
+
+export const googleOauthValidation = async (req, res, next) => {
+    const { access_token } = req.body
+
+    if(!access_token) return next()
+
+    try{
+        const auth = await getAuth().verifyIdToken(access_token)
+        const { email, name, picture } = auth
+        const profileImg = picture.replace("s96-c", "s384-c")
+    
+        req.user = {
+            fullName: name,
+            email,
+            profileImg
+        }
+        next()
+
+    }catch(err){
+        next(err)
+    }
+
 }
