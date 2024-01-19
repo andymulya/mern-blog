@@ -7,13 +7,13 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { lookInSession } from './services/session'
 import { handleAuthUser } from "./redux/slices/userSlice"
-import Beranda from './pages/Beranda.page'
+import Home from './pages/Home.page'
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={ <Layout /> }>
-      <Route index element={ <Beranda /> } />
+      <Route index element={ <Home /> } />
       <Route path="sign-in" element={<AuthForm />} />
       <Route path="sign-up" element={<AuthForm />} />
       <Route path="editor" element={<Write />} />
