@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { IconNotify, IconSearch, IconWrite } from './Icon.component'
 import Logo from './Logo.component'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Search from './Search.component'
 import { useSelector } from 'react-redux'
 import UserNavigationPanel from './UserNavigationPanel.component'
@@ -9,19 +9,23 @@ import UserNavigationPanel from './UserNavigationPanel.component'
 const Navbar = () => {
     const[searchBoxVisibility, setSearchBoxVisibility] = useState(false)
     const[isUserNavPanel, setIsUserNavPanel] = useState(false)
+    const { pathname } = useLocation()
     const { user } = useSelector((state) => state.user)
-
+    console.log(pathname)
     return (
         <nav className="navbar">
             <Logo />
-            
-            <Search isVisibility={ searchBoxVisibility }/>
+            {
+                (pathname != "/sign-in" && pathname != "/sign-up") && <Search isVisibility={ searchBoxVisibility }/>
+            }
 
             <div className="flex justify-end items-center gap-5 w-full md:w-3/4">
-                {/* Button Search */}
-                <button className={`hover:bg-gray-200 p-3 rounded-full md:hidden ${searchBoxVisibility && "bg-gray-200"}`} onClick={() => setSearchBoxVisibility((currentVal) => !currentVal)} >
-                    <IconSearch />
-                </button>
+                {
+                    (pathname != "/sign-in" && pathname != "/sign-up") && 
+                    <button className={`hover:bg-gray-200 p-3 rounded-full md:hidden ${searchBoxVisibility && "bg-gray-200"}`} onClick={() => setSearchBoxVisibility((currentVal) => !currentVal)} >
+                        <IconSearch />
+                    </button>
+                }
 
                 {/* Link Write */}
                 {
