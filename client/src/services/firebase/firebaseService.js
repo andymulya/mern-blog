@@ -3,13 +3,13 @@ import app from "./firebaseConfig";
 
 
 export const googleAuth = async () => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth(app)
-
+    
     try{
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth(app)
         const res = await signInWithPopup(auth, provider)
         return res
     }catch(err){
-        console.log(err)
+        if(err) throw err
     }
 }
