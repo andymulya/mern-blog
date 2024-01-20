@@ -7,7 +7,7 @@ import { IconEmail, IconGoogle, IconPassword, IconUser } from "../components/Ico
 import Divider from "../components/Divider.component"
 import { AnimationWrapper } from "../common/Animations"
 import { getDataForm } from "../utils"
-import { authUser } from "../services/baseApi"
+import { authUserService } from "../services/baseApi"
 import { handleAuthUser } from "../redux/slices/userSlice"
 import { storeInSession } from "../services/session"
 import { googleAuth } from "../services/firebase/firebaseService"
@@ -28,7 +28,7 @@ export default function AuthForm(){
 
         try{
             setIsLoading(true)
-            const user = await authUser(pathname, formData)
+            const user = await authUserService(pathname, formData)
             dispatch(handleAuthUser(user.data))
             storeInSession("data", JSON.stringify(user.data))
             toast.success(user.data.message)
@@ -45,12 +45,15 @@ export default function AuthForm(){
 
         try{
             setIsLoading(true)
-            const user = await googleAuth()
-            console.log(user.user.accessToken)
+            const auth = await googleAuth()
+            const user = await authUserService("/google-auth", { access_token: auth.user.accessToken })
+            dispatch(handleAuthUser(user.data))
+            storeInSession("data", JSON.stringify(user.data))
+            toast.success(user.data.message)
             setIsLoading(false)
         }catch(err){
+            toast.error(err.response.data.message)
             setIsLoading(false)
-            console.log(err) 
         }
     }
 
