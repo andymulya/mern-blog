@@ -11,7 +11,7 @@ const Navbar = () => {
     const[isUserNavPanel, setIsUserNavPanel] = useState(false)
     const { pathname } = useLocation()
     const { user } = useSelector((state) => state.user)
-    console.log(pathname)
+    
     return (
         <nav className="navbar">
             <Logo />

@@ -22,11 +22,11 @@ const UserNavigationPanel = () => {
             setIsLoading(false)
         }
     }
-
+    
     return(
         <AnimationWrapper transition={{ duration: 0.2 }} className={"absolute right-2 top-[5rem] z-50"}>
             <div className="bg-gray-50 flex flex-col gap-1 absolute right-2 border border-gray-200 w-60 rounded-lg overflow-hidden duration-200 pt-2">
-                <Link to={`/profile/@${user.username}`} className="flex link gap-2 text-gray-700 hover:text-blue-700">
+                <Link to={`/profile/@${user.username}`} className="flex link gap-2 text-gray-700 hover:text-blue-700" >
                     <IconUser />
                     <span>Profile</span>
                 </Link>
@@ -55,7 +55,6 @@ const UserNavigationPanel = () => {
                         </div>
                     </button>
                 }
-
             </div>
         </AnimationWrapper>
     )
