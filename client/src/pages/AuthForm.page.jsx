@@ -31,7 +31,6 @@ export default function AuthForm(){
             const user = await authUserService(pathname, formData)
             dispatch(handleAuthUser(user.data))
             storeInSession("data", JSON.stringify(user.data))
-            toast.success(user.data.message)
             setIsLoading(false)
         }catch(err){
             toast.error(err.response.data.message)
@@ -49,7 +48,6 @@ export default function AuthForm(){
             const user = await authUserService("/google-auth", { access_token: auth.user.accessToken })
             dispatch(handleAuthUser(user.data))
             storeInSession("data", JSON.stringify(user.data))
-            toast.success(user.data.message)
             setIsLoading(false)
         }catch(err){
             toast.error(err.response.data.message)
