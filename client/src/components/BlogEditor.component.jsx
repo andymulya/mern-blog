@@ -1,6 +1,6 @@
 import { AnimationWrapper } from "./Animations.component"
 import { getDataForm } from "../utils"
-import BlogBanner from "./BlogBanner"
+import BlogBanner from "./BlogBanner.component"
 import Divider from "./Divider.component"
 import BlogBody from "./BlogBody.component"
 
