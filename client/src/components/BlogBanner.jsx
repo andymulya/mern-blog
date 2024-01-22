@@ -64,9 +64,10 @@ const BlogBanner = () => {
                     position: "bottom-right"
                 }
             }} />
-            <div className="mx-auto w-full max-w-[900px]">
+
+            <div className="mx-auto w-full max-w-[800px]">
                 <div className="aspect-video bg-blue-50 border-4 rounded-lg border-gray-300">
-                    <label htmlFor="blogBanner" className="">
+                    <label htmlFor="blogBanner" className="cursor-pointer hover:opacity-70">
                         <img src={ banner } alt="Blog Banner" className="w-full h-full object-contain"/>
                         <input id="blogBanner" type="file" accept=".png, .jpg .jpeg" hidden onChange={ handlePhotoBanner } />
                     </label>
