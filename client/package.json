@@ -21,6 +21,7 @@
     "@editorjs/marker": "^1.4.0",
     "@editorjs/paragraph": "^2.11.3",
     "@editorjs/quote": "^2.6.0",
+    "@editorjs/simple-image": "^1.6.0",
     "@editorjs/table": "^2.3.0",
     "@editorjs/underline": "^1.1.0",
     "@reduxjs/toolkit": "^2.0.1",

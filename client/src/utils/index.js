@@ -4,7 +4,6 @@ import Paragraph from "@editorjs/paragraph"
 import Code from "@editorjs/code"
 import Embed from "@editorjs/embed"
 import Header from "@editorjs/header"
-import Image from "@editorjs/image"
 import InlineCode from "@editorjs/inline-code"
 import List from "@editorjs/list"
 import Marker from "@editorjs/marker"
@@ -26,20 +25,8 @@ export const getDataForm = (formRef) => {
     }
 }
 
-const uploadImageByUrl = async (e) => {
-    const urlImage = new Promise((resolve, reject) => {
-        try{
-            resolve(e)
-        }catch(err){
-            reject(err)
-        }
-    })
+export const generateFileName = (username) => (`${new Date().getTime()} - ${ username }`)
 
-    return urlImage.then((url) => ({
-        success: 1,
-        file: { url }
-    }))
-}
 
 export const toolsEditor = {
     header: {
@@ -62,14 +49,6 @@ export const toolsEditor = {
     paragraph: {
         class: Paragraph,
         inlineToolbar: true
-    },
-    image: {
-        class: Image,
-        config: {
-            uploader: {
-                uploadByUrl: uploadImageByUrl
-            }
-        }
     },
     checklist: {
         class: Checklist,

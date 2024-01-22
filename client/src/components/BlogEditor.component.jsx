@@ -1,11 +1,10 @@
-import { createReactEditorJS } from "react-editor-js"
 import { AnimationWrapper } from "./Animations.component"
-import { getDataForm, toolsEditor } from "../utils"
+import { getDataForm } from "../utils"
 import BlogBanner from "./BlogBanner"
 import Divider from "./Divider.component"
+import BlogBody from "./BlogBody.component"
 
 const BlogEditor = () => {
-    const ReactEditorJs = createReactEditorJS()
 
     const handleTitleChange = (e) => {
         const input = e.target
@@ -33,9 +32,7 @@ const BlogEditor = () => {
                     
                     <Divider title={"content"} style={"my-0"} />
 
-                    <ReactEditorJs holder="textEditor" tools={ toolsEditor } placeholder="Let's write an awesome content" >
-                        <div id="textEditor" />
-                    </ReactEditorJs>
+                    <BlogBody />
                 </form>
             </section>
         </AnimationWrapper>

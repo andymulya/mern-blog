@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { useSelector } from 'react-redux'
 import toast, { Toaster } from 'react-hot-toast'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
-import app from "../services/firebase/firebaseConfig"
+import { uploadImageFirebase } from "../services/firebase/firebaseService"
 
 const BlogBanner = () => {
     const [banner, setBanner] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjL9QNQqvqc71i44cblaNOKMQnqyJKcyRuqA&usqp=CAU")
@@ -10,47 +9,22 @@ const BlogBanner = () => {
 
     const handlePhotoBanner = async (e) => {
         const img = e.target.files[0]
-
-        try{
-            if(img){
-                toast.loading('Uploading ...')
-                const storage = getStorage(app)
-                const generateFilename = `${new Date().getTime()} - ${user.username}`
-                
-                const metadata = {
-                    contentType: img.type
-                }
-    
-                const storageRef = ref(storage, `${user.username}/images/post/banner` + generateFilename)
-                const upload = uploadBytesResumable(storageRef, img, metadata)
-                
-                upload.on("state_changed", (snapshot) => {
-                    
-                    switch(snapshot.state){
-                        case "paused":
-                            console.log('Upload is paused')
-                            break
-                        case "running":
-                            console.log(Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100))
-                            break
-                    }
-                },
-                (error) => {
-                    toast.dismiss()
-                    toast.error(error.message)
-                }, 
-                () => {
-                    getDownloadURL(upload.snapshot.ref).then((downloadURL) => {
-                        setBanner(downloadURL)
-                        toast.dismiss()
-                        toast.success("Success")
-                    })
-                })
+        
+        if(img){
+            const loading = toast.loading("Upload ...")
+            
+            try{
+                const urlImage = await uploadImageFirebase(img, `${ user.username }/images/blog/banner/`, user.username,)
+                setBanner(urlImage)
+                toast.dismiss(loading)
+                toast.success("Success")
+            }catch(err){
+                toast.dismiss(loading)
+                toast.error(err)
             }
-        }catch(err){
-            toast.dismiss()
-            toast.error(err)
         }
+
+
     }
 
     return (
