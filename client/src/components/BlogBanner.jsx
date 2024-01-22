@@ -13,6 +13,7 @@ const BlogBanner = () => {
 
         try{
             if(img){
+                toast.loading('Uploading ...')
                 const storage = getStorage(app)
                 const generateFilename = `${new Date().getTime()} - ${user.username}`
                 
@@ -30,7 +31,7 @@ const BlogBanner = () => {
                             console.log('Upload is paused')
                             break
                         case "running":
-                            toast.loading(`${Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)}%`)
+                            console.log(Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100))
                             break
                     }
                 },
@@ -66,7 +67,7 @@ const BlogBanner = () => {
             }} />
 
             <div className="mx-auto w-full max-w-[800px]">
-                <div className="aspect-video bg-blue-50 border-4 rounded-lg border-gray-300">
+                <div className="aspect-video bg-blue-50 border-2 rounded-lg border-gray-300">
                     <label htmlFor="blogBanner" className="cursor-pointer hover:opacity-70">
                         <img src={ banner } alt="Blog Banner" className="w-full h-full object-contain"/>
                         <input id="blogBanner" type="file" accept=".png, .jpg .jpeg" hidden onChange={ handlePhotoBanner } />
