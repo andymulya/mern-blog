@@ -1,7 +1,11 @@
-import { AnimationWrapper } from "../common/Animations"
+import { createReactEditorJS } from "react-editor-js"
+import { AnimationWrapper } from "./Animations.component"
+import { getDataForm, toolsEditor } from "../utils"
 import BlogBanner from "./BlogBanner"
+import Divider from "./Divider.component"
 
 const BlogEditor = () => {
+    const ReactEditorJs = createReactEditorJS()
 
     const handleTitleChange = (e) => {
         const input = e.target
@@ -13,11 +17,26 @@ const BlogEditor = () => {
         if(e.key === "Enter" && e.keyCode === 13) e.preventDefault()
     }
 
+    const handleFormBlogChange = () => {
+        const formBlogElement = document.getElementById("formBlog")
+        const dataBlog = getDataForm(formBlogElement)
+        console.log(dataBlog)
+    }
+
+
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
             <section className="mt-5 px-5 mx-auto w-full max-w-[800px]">
-                <BlogBanner />
-                <textarea placeholder="Blog Title" className="leading-tight w-full outline-none resize-none font-medium text-4xl mt-10 placeholder:opacity-80" onChange={ handleTitleChange } onKeyDown={ handleTitleKeyDown }/>
+                <form id="formBlog" onChange={ handleFormBlogChange }>
+                    <BlogBanner />
+                    <textarea placeholder="Blog Title" name="title" className="leading-tight h-14 w-full outline-none resize-none font-medium text-4xl mt-10 placeholder:opacity-80" onChange={ handleTitleChange } onKeyDown={ handleTitleKeyDown }/>
+                    
+                    <Divider title={"content"} style={"my-0"} />
+
+                    <ReactEditorJs holder="textEditor" tools={ toolsEditor } placeholder="Let's write an awesome content" >
+                        <div id="textEditor" />
+                    </ReactEditorJs>
+                </form>
             </section>
         </AnimationWrapper>
     )

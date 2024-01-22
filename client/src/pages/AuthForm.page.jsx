@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import TextInputIcon from "../components/TextInputIcon.component"
 import { IconEmail, IconGoogle, IconPassword, IconUser } from "../components/Icon.component"
 import Divider from "../components/Divider.component"
-import { AnimationWrapper } from "../common/Animations"
+import { AnimationWrapper } from "../components/Animations.component"
 import { getDataForm } from "../utils"
 import { authUserService } from "../services/baseApi"
 import { handleAuthUser } from "../redux/slices/userSlice"

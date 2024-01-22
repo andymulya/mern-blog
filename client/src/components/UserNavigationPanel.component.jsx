@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { AnimationWrapper } from "../common/Animations"
+import { AnimationWrapper } from "./Animations.component"
 import { IconExit, IconNotify, IconSetting, IconUser, IconWrite } from "./Icon.component"
 import { useDispatch, useSelector } from "react-redux"
 import { removeFromSession } from "../services/session"
