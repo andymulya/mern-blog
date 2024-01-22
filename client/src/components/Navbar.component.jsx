@@ -16,12 +16,13 @@ const Navbar = () => {
         <nav className="navbar">
             <Logo />
             {
-                (pathname != "/sign-in" && pathname != "/sign-up") && <Search isVisibility={ searchBoxVisibility }/>
+                (pathname != "/sign-in" && pathname != "/sign-up" && pathname != "/editor") && 
+                <Search isVisibility={ searchBoxVisibility }/>
             }
 
             <div className="flex justify-end items-center gap-5 w-full md:w-3/4">
                 {
-                    (pathname != "/sign-in" && pathname != "/sign-up") && 
+                    (pathname != "/sign-in" && pathname != "/sign-up" && pathname != "/editor") && 
                     <button className={`hover:bg-gray-200 p-3 rounded-full md:hidden ${searchBoxVisibility && "bg-gray-200"}`} onClick={() => setSearchBoxVisibility((currentVal) => !currentVal)} >
                         <IconSearch />
                     </button>

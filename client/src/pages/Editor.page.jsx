@@ -1,6 +1,13 @@
-export default function Editor() {
+import { useOutletContext } from "react-router-dom"
+import BlogEditor from "../components/BlogEditor.component"
+import PublishForm from "../components/PublishForm.component"
 
+export default function Editor() {
+    const { stateEditor } = useOutletContext()
+    
     return (
-        <h1>Write</h1> 
+        (stateEditor === "editor") ? 
+        <BlogEditor />:
+        <PublishForm />
     )
 }
