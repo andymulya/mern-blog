@@ -3,16 +3,19 @@
 @tailwind utilities;
 
 @layer base{
+    h1 {
+        @apply text-4xl font-bold max-md:text-3xl
+    }
     h2 {
-        @apply text-4xl leading-loose font-bold max-md:text-3xl max-md:leading-normal !important;
+        @apply text-3xl leading-loose font-medium max-md:text-2xl max-md:leading-normal !important;
     }
 
     h3 {
-        @apply text-2xl leading-snug font-bold max-md:text-xl max-md:leading-tight !important;
+        @apply text-2xl leading-snug font-medium max-md:text-xl max-md:leading-tight !important;
     }
 
     h4 {
-        @apply text-xl leading-tight font-semibold max-md:text-lg max-md:leading-tight !important;
+        @apply text-xl leading-tight font-medium max-md:text-lg max-md:leading-tight !important;
     }
 }
 

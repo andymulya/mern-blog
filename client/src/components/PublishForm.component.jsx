@@ -1,6 +1,8 @@
 const PublishForm = () => {
     return (
-        <h1>Publish</h1>
+        <section className="block mx-auto">
+            <h1>Publish</h1>
+        </section>
     )
 }
 
