@@ -19,13 +19,18 @@ export default function Editor() {
     const handleSave = useCallback(async () => {
 
         if(!post.banner) return toast.error("Upload a blog banner to publish it")
-        if(post.title.length == 0) return toast.error("Write blog title to publish it")
-        if(!post.body.length == 0) return toast.error("Write something in your blog to publish it")
+        if(!post.title) return toast.error("Write blog title to publish it")
 
         const loading = toast.loading("Save ...")
 
         try{
             const save = await editorCore.current.dangerouslyLowLevelInstance?.save()
+
+            if(save.blocks.length === 0){
+                toast.dismiss(loading)
+                return toast.error("Write something in your blog to publish it")
+            }
+
             dispatch(setDataPost({ ...post, body: save.blocks }))
             toast.dismiss(loading)
             toast.success("Success")
@@ -35,7 +40,7 @@ export default function Editor() {
         }
     }, [dispatch, post])
 
-    
+    console.log(post)
     return (
         <>
             <div className="flex gap-4 mt-3 mr-4 justify-end">

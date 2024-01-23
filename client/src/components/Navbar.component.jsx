@@ -11,6 +11,7 @@ const Navbar = () => {
     const[isUserNavPanel, setIsUserNavPanel] = useState(false)
     const { pathname } = useLocation()
     const { user } = useSelector((state) => state.user)
+
     
     return (
         <nav className="navbar">
@@ -47,7 +48,7 @@ const Navbar = () => {
 
                         {/* Image profile */}
                         <button className="w-11 h-11 rounded-full bg-blue-500 p-[2px]" onClick={() => setIsUserNavPanel((currentVal) => !currentVal)} onBlur={() => setTimeout(() => setIsUserNavPanel(false), 200) }>
-                            <img src={ user.profileImg } className="rounded-full object-cover" />
+                            <img src={ user.profileImg } referrerPolicy="origin-when-cross-origin" className="rounded-full object-cover" />
                         </button>
                         {
                             (isUserNavPanel) && <UserNavigationPanel />
