@@ -10,6 +10,7 @@ import { uploadImageFirebase } from "../services/firebase/firebaseService"
 const BlogBody = ({ handleInitialize }) => {
     const ReactEditorJs = createReactEditorJS()
     const { user } = useSelector((state) => state.user)
+    const post = useSelector((state) => state.post)
     
     const uploadImageByUrl = async (img) => {
         const urlImage = new Promise((resolve, reject) => {
@@ -43,7 +44,7 @@ const BlogBody = ({ handleInitialize }) => {
     }
 
     return (
-        <ReactEditorJs onInitialize={ handleInitialize } holder="textEditor" tools={{ 
+        <ReactEditorJs onInitialize={ handleInitialize } defaultValue={{ blocks: [...post.body] }} holder="textEditor" tools={{ 
             image: {
                 class: Image,
                 config: {
