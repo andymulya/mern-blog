@@ -1,6 +1,6 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import { useDispatch } from "react-redux"
-import { Layout, LayoutEditor } from './layouts/Layout'
+import { Layout } from './layouts/Layout'
 import AuthForm from './pages/AuthForm.page'
 import Editor from './pages/Editor.page'
 import axios from 'axios'
@@ -21,9 +21,7 @@ const router = createBrowserRouter(
       <Route path="sign-up" element={<AuthForm />} />
       <Route element={<PrivatePage />}>
         <Route path="profile/:user" element={<Profile />} />
-        <Route path="editor" element={<LayoutEditor />} >
-          <Route index element={<Editor />} />
-        </Route>
+        <Route path="editor" element={<Editor />} />
         <Route path="settings" element={<Settings />} />
       </Route>
     </Route>

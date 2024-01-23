@@ -1,4 +1,5 @@
 import { createReactEditorJS } from "react-editor-js"
+import PropTypes from 'prop-types'
 import Image from "@editorjs/image"
 import { useSelector } from "react-redux"
 import { toolsEditor } from "../utils"
@@ -6,10 +7,10 @@ import { uploadImageFirebase } from "../services/firebase/firebaseService"
 
 
 
-const BlogBody = () => {
+const BlogBody = ({ handleInitialize }) => {
     const ReactEditorJs = createReactEditorJS()
     const { user } = useSelector((state) => state.user)
-
+    
     const uploadImageByUrl = async (img) => {
         const urlImage = new Promise((resolve, reject) => {
             try{
@@ -42,7 +43,7 @@ const BlogBody = () => {
     }
 
     return (
-        <ReactEditorJs holder="textEditor" tools={{ 
+        <ReactEditorJs onInitialize={ handleInitialize } holder="textEditor" tools={{ 
             image: {
                 class: Image,
                 config: {
@@ -58,6 +59,10 @@ const BlogBody = () => {
 
         </ReactEditorJs>
     )
+}
+
+BlogBody.propTypes = {
+    handleInitialize: PropTypes.func
 }
 
 export default BlogBody
