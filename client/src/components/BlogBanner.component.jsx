@@ -5,7 +5,7 @@ import { setDataPost } from "../redux/slices/postSlice"
 import { useRef } from 'react'
 
 const BlogBanner = () => {
-    const bannerImageRef = useRef()
+    const bannerBlogImageRef = useRef()
     const post = useSelector((state) => state.post)
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.user) 
@@ -20,7 +20,7 @@ const BlogBanner = () => {
             try{
                 const urlImage = await uploadImageFirebase(img, `${ user.username }/images/blog/banner/`, user.username)
                 dispatch(setDataPost({ ...post, banner: urlImage }))
-                bannerImageRef.current.src = urlImage
+                bannerBlogImageRef.current.src = urlImage
                 toast.dismiss(loading)
                 toast.success("Success")
             }catch(err){
@@ -47,7 +47,7 @@ const BlogBanner = () => {
 
             <div className="aspect-video bg-blue-50 border-2 rounded-lg border-gray-300">
                 <label htmlFor="blogBanner" className="cursor-pointer hover:opacity-70">
-                    <img ref={ bannerImageRef } src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjL9QNQqvqc71i44cblaNOKMQnqyJKcyRuqA&usqp=CAU" alt="Blog Banner" className="w-full h-full object-contain"/>
+                    <img ref={ bannerBlogImageRef } src={(post.banner) ? post.banner : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjL9QNQqvqc71i44cblaNOKMQnqyJKcyRuqA&usqp=CAU"} alt="Blog Banner" className="w-full h-full object-contain"/>
                     <input id="blogBanner" type="file" accept=".png, .jpg .jpeg" hidden onChange={ handlePhotoBanner } />
                 </label>
             </div>

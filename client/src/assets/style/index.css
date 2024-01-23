@@ -41,6 +41,10 @@
         @apply px-4 py-2 whitespace-nowrap capitalize rounded-full hover:opacity-80;
     }
 
+    .btn-small{
+        @apply px-2 py-1 text-sm md:text-base whitespace-nowrap capitalize rounded-full hover:opacity-80;
+    }
+
     .h-cover{
         @apply min-h-[calc(100vh-80px)];
     }

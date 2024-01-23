@@ -15,14 +15,18 @@ import Settings from './pages/Settings.page'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={ <Layout /> }>
-      <Route index element={ <Dashboard /> } />
-      <Route path="sign-in" element={<AuthForm />} />
-      <Route path="sign-up" element={<AuthForm />} />
+    <Route>
+      <Route path="/" element={ <Layout /> }>
+        <Route index element={ <Dashboard /> } />
+        <Route path="sign-in" element={<AuthForm />} />
+        <Route path="sign-up" element={<AuthForm />} />
+        <Route element={<PrivatePage />}>
+          <Route path="profile/:user" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+      </Route>
       <Route element={<PrivatePage />}>
-        <Route path="profile/:user" element={<Profile />} />
-        <Route path="editor" element={<Editor />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="/editor" element={<Editor />} />
       </Route>
     </Route>
   )

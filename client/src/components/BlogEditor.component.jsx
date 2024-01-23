@@ -28,7 +28,7 @@ const BlogEditor = ({ handleBlogBody }) => {
         <AnimationWrapper transition={{ duration: 0.5 }}>
             <section className="mt-5 px-5 mx-auto w-full max-w-[800px]">
                 <BlogBanner />
-                <textarea placeholder="Blog Title" name="title" className="leading-tight h-14 w-full outline-none resize-none font-medium text-4xl mt-10 placeholder:opacity-80" onChange={ handleTitleChange } onKeyDown={ handleTitleKeyDown }/>
+                <textarea value={ post.title } placeholder="Blog Title" name="title" className="leading-tight h-14 w-full outline-none resize-none font-medium text-4xl mt-10 placeholder:opacity-80" onChange={ handleTitleChange } onKeyDown={ handleTitleKeyDown }/>
                 
                 <Divider title={"content"} style={"my-0"} />
 
