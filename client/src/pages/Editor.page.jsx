@@ -34,18 +34,19 @@ export default function Editor() {
             dispatch(setDataPost({ ...post, body: save.blocks }))
             toast.dismiss(loading)
             toast.success("Success")
+            setStateEditor("publish")
         }catch(err){
             toast.dismiss(loading)
             toast.error(err)
         }
     }, [dispatch, post])
 
-    console.log(post)
+
     return (
         <>
             <div className="flex gap-4 mt-3 mr-4 justify-end">
                 <button className="btn bg-blue-800 text-white font-semibold" onClick={ handleSave }>Publish</button>
-                <button className="btn bg-blue-100 text-blue-800 font-semibold" onClick={() => setStateEditor("publish")}>Save Draft</button>
+                <button className="btn bg-blue-100 text-blue-800 font-semibold" onClick={() => {}}>Save Draft</button>
             </div>
             {
                 (stateEditor === "editor") ? 
