@@ -55,9 +55,12 @@ export default function Editor() {
                         <button className="btn-small bg-blue-100 text-blue-800 font-semibold" onClick={() => {}}>Save Draft</button>
                     </div>
                 </nav>:
-                <button className="m-4 hover:bg-gray-200 text-blue-700 p-3 rounded-full" onClick={() => setStateEditor("editor")}>
-                    <IconArrowLeft />
-                </button>
+                <nav className="navbar justify-between">
+                    <button className="m-4 hover:bg-gray-200 text-blue-700 p-3 rounded-full" onClick={() => setStateEditor("editor")}>
+                        <IconArrowLeft />
+                    </button>
+                    <h1 className="font-medium uppercase">Preview</h1>
+                </nav>
             }
             {
                 (stateEditor === "editor") ? 

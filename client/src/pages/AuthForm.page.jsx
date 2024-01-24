@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, Navigate, useLocation } from "react-router-dom"
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import TextInputIcon from "../components/TextInputIcon.component"
 import { IconEmail, IconGoogle, IconPassword, IconUser } from "../components/Icon.component"
 import Divider from "../components/Divider.component"
@@ -39,7 +39,7 @@ export default function AuthForm(){
     }
 
 
-    const handlegoogleAuth = async (e) => {
+    const handleGoogleAuth = async (e) => {
         e.preventDefault()
 
         try{
@@ -61,17 +61,6 @@ export default function AuthForm(){
 
         :<AnimationWrapper keyValue={ type } transition={{ duration: 0.5 }}>
             <section className={`h-cover flex items-center justify-center ${(type !== "sign-in") && "mb-10"}`}>
-                {/* Untuk notify */}
-                <Toaster toastOptions={{
-                    success: {
-                        className: "bg-green-100 border border-green-500 font-bold",
-                        position: "bottom-right"
-                    },
-                    error: {
-                        className: "bg-red-100 border border-red-500 font-bold",
-                        position: "bottom-right"
-                    }
-                }} />
 
                 <form id="form" className="w-[80%] max-w-[450px]" onSubmit={(e) => handleSubmitForm(e)}>
                     <h1 className="text-center font-bold my-10 text-4xl capitalize">{ (type == "sign-in") ? "Welcome Back" : "Join us Today" }</h1>
@@ -108,7 +97,7 @@ export default function AuthForm(){
 
                     {/* Oauth */}
                     <section>
-                        <button disabled={ isLoading } className=" btn w-[90%] gap-3 flex items-center justify-center mx-auto border border-black font-bold text-lg hover:bg-slate-100 disabled:opacity-75" onClick={(e) => handlegoogleAuth(e)}>
+                        <button disabled={ isLoading } className=" btn w-[90%] gap-3 flex items-center justify-center mx-auto border border-black font-bold text-lg hover:bg-slate-100 disabled:opacity-75" onClick={(e) => handleGoogleAuth(e)}>
                             <IconGoogle w={ 30 } h={ 30 } />
                             Continue With Google
                         </button>

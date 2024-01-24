@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { uploadImageFirebase } from "../services/firebase/firebaseService"
 import { setDataPost } from "../redux/slices/postSlice"
 import { useRef } from 'react'
@@ -34,21 +34,10 @@ const BlogBanner = () => {
 
     return (
         <>
-            <Toaster toastOptions={{
-                success: {
-                    className: "bg-green-100 border border-green-500 font-bold",
-                    position: "bottom-right"
-                },
-                error: {
-                    className: "bg-red-100 border border-red-500 font-bold",
-                    position: "bottom-right"
-                }
-            }} />
-
             <div className="aspect-video bg-blue-50 border-2 rounded-lg border-gray-300">
                 <label htmlFor="blogBanner" className="cursor-pointer hover:opacity-70">
                     <img ref={ bannerBlogImageRef } src={(post.banner) ? post.banner : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjL9QNQqvqc71i44cblaNOKMQnqyJKcyRuqA&usqp=CAU"} alt="Blog Banner" className="w-full h-full object-contain"/>
-                    <input id="blogBanner" type="file" accept=".png, .jpg .jpeg" hidden onChange={ handlePhotoBanner } />
+                    <input autoFocus id="blogBanner" type="file" accept=".png, .jpg .jpeg" hidden onChange={ handlePhotoBanner } />
                 </label>
             </div>
         </>

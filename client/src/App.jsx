@@ -1,5 +1,6 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import { useDispatch } from "react-redux"
+import { Toaster } from 'react-hot-toast'
 import { Layout } from './layouts/Layout'
 import AuthForm from './pages/AuthForm.page'
 import Editor from './pages/Editor.page'
@@ -46,6 +47,17 @@ export default function App() {
 
   return (
     <>
+      {/* Config notify */}
+      <Toaster toastOptions={{
+          success: {
+              className: "bg-green-100 border border-green-500 font-bold",
+              position: "bottom-right"
+          },
+          error: {
+              className: "bg-red-100 border border-red-500 font-bold",
+              position: "bottom-right"
+          }
+      }} />
       <RouterProvider router={ router } />
     </>
   )

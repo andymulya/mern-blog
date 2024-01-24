@@ -10,7 +10,7 @@ const BlogEditor = ({ handleBlogBody }) => {
 
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
-            <section className="mt-5 px-5 mx-auto w-full max-w-[800px]">
+            <section className="mt-5 px-5 mx-auto w-full max-w-[750px]">
                 <BlogBanner />
                 
                 <BlogTitle />
