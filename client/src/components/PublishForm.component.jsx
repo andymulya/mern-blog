@@ -12,7 +12,7 @@ const PublishForm = () => {
     const characterLimitDesc = 200
     const tagsLimit = 10
 
-    const handleKeyDownDesc = (e) => {
+    const handleKeyDown = (e) => {
         if(e.key === "Enter" || e.keyCode === 13) e.preventDefault()
     }
 
@@ -39,6 +39,11 @@ const PublishForm = () => {
         }
     }
 
+    const handlePublishForm = (e) => {
+        e.preventDefault()
+        console.log(post)
+    }
+
 
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
@@ -57,7 +62,7 @@ const PublishForm = () => {
                 <section className="mt-10 lg:w-3/4 lg:mt-0">
                     
                     {/* Form Publish */}
-                    <form id="formPublish" className="mt-12 mb-2 flex flex-col gap-5" onSubmit={(e) => e.preventDefault()} onChange={ handleFormPublishChange }>
+                    <form id="formPublish" className="mt-12 mb-2 flex flex-col gap-5" onSubmit={ handlePublishForm } onKeyDown={ handleKeyDown } onChange={ handleFormPublishChange }>
                         {/* Blog Title */}
                         <div>
                             <label htmlFor="blogTitle" className="text-sm md:text-base text-gray-600">Blog title</label>
@@ -67,7 +72,7 @@ const PublishForm = () => {
                         {/* Blog Description */}
                         <div>
                             <label htmlFor="blogDesc" className="text-sm md:text-base text-gray-600">Blog Description</label>
-                            <textarea maxLength={ characterLimitDesc } defaultValue={ post.desc } id="blogDesc" name="blogDesc" placeholder="This is a short description" className="w-full p-2 outline-none bg-blue-100 h-20 resize-none rounded-lg focus:border-2 focus:border-blue-500 focus:bg-white" onKeyDown={ handleKeyDownDesc }/>
+                            <textarea maxLength={ characterLimitDesc } defaultValue={ post.desc } id="blogDesc" name="blogDesc" placeholder="This is a short description" className="w-full p-2 outline-none bg-blue-100 h-20 resize-none rounded-lg focus:border-2 focus:border-blue-500 focus:bg-white" onKeyDown={ handleKeyDown }/>
                             <span className="block text-right text-sm text-gray-500">{ characterLimitDesc - post.desc.length } characters left</span>
                         </div>
 
