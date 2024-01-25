@@ -20,13 +20,13 @@ export const signUpValidation = async (req, res, next) => {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/ // regex for password
     const usernameRegex = /^[a-z0-9]{6,15}$/i // regex for username
 
-    if(!fullName || !username || !email || !password) return next(errorCustomHandler(400, "Required field missing"))
+    if(!fullName || !username || !email || !password) return next(errorCustomHandler(403, "Required field missing"))
 
-    if(!usernameRegex.test(username)) return next(errorCustomHandler(400, "Username should be 6 to 15 characters long, without any special characters and without any spaces"))
+    if(!usernameRegex.test(username)) return next(errorCustomHandler(403, "Username should be 6 to 15 characters long, without any special characters and without any spaces"))
 
-    if(!emailRegex.test(email)) return next(errorCustomHandler(400, "Email is invalid"))
+    if(!emailRegex.test(email)) return next(errorCustomHandler(403, "Email is invalid"))
 
-    if(!passwordRegex.test(password)) return next(errorCustomHandler(400, "Password should be 6 to 20 characters long with a numeric, 1 lowercase, and 1 uppercase"))
+    if(!passwordRegex.test(password)) return next(errorCustomHandler(403, "Password should be 6 to 20 characters long with a numeric, 1 lowercase, and 1 uppercase"))
 
     next()
 }
@@ -34,14 +34,14 @@ export const signUpValidation = async (req, res, next) => {
 export const signInValidation = async (req, res, next) => {
     const { email, password } = req.body
 
-    if(!email || !password) return next(errorCustomHandler(400, "Required field missing"))
+    if(!email || !password) return next(errorCustomHandler(403, "Required field missing"))
 
     try{
         const user = await User.findOne({ "personalInfo.email": email })
-        if(!user) return next(errorCustomHandler(500, "Something when wrong"))
+        if(!user) return next(errorCustomHandler(403, "Something when wrong"))
         if(user.googleAuth) return next(errorCustomHandler(403, "Account was created using google. Try logging in with google"))
         const comparePassword = await compareString(password, user.personalInfo.password)
-        if(!comparePassword) return next(errorCustomHandler(500, "Something when wrong"))
+        if(!comparePassword) return next(errorCustomHandler(403, "Something when wrong"))
 
     }catch(err){
         return next(err)
@@ -106,6 +106,8 @@ export const createPostValidation = (req, res, next) => {
     const newTags = tags.map((tag) => tag.toLowerCase())
     const blogSlug = createSlug(title)
 
+    const authorId = req.userId
+
     req.post = {
         blogSlug,
         title,
@@ -113,6 +115,7 @@ export const createPostValidation = (req, res, next) => {
         desc,
         body,
         tags: newTags,
+        author: authorId,
         draft: Boolean(draft)
     }
 

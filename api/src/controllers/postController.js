@@ -3,8 +3,8 @@ import User from "../models/User.js"
 
 
 export const createPost = async (req, res, next) => {
-    const { blogSlug, title, banner, desc, body, tags, draft } = req.post
-    const authorId = req.userId
+    const { blogSlug, title, banner, desc, body, tags, author, draft } = req.post
+    
 
 
     try{
@@ -15,11 +15,11 @@ export const createPost = async (req, res, next) => {
             desc,
             body,
             tags,
-            author: authorId,
-            draft: Boolean(draft)
+            author,
+            draft
         })
     
-        await User.findOneAndUpdate({ _id: authorId }, { $inc: { "accountInfo.totalPost": (!draft) && 1 }, $push: { "blogs": blog._id } })
+        await User.findOneAndUpdate({ _id: author }, { $inc: { "accountInfo.totalPost": (!draft) && 1 }, $push: { "blogs": blog._id } })
         
         res.status(201).json({
             success: true,
