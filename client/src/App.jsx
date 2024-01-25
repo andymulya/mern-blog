@@ -8,7 +8,7 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { lookInSession } from './services/session'
 import { handleAuthUser } from "./redux/slices/userSlice"
-import Dashboard from './pages/Dashboard.page'
+import Home from './pages/Home.page'
 import Profile from './pages/Profile.page'
 import PrivatePage from './pages/PrivatePage.page'
 import Settings from './pages/Settings.page'
@@ -18,7 +18,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={ <Layout /> }>
-        <Route index element={ <Dashboard /> } />
+        <Route index element={ <Home /> } />
         <Route path="sign-in" element={<AuthForm />} />
         <Route path="sign-up" element={<AuthForm />} />
         <Route element={<PrivatePage />}>
