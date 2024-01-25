@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, Navigate, useLocation } from "react-router-dom"
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import toast from 'react-hot-toast'
 import TextInputIcon from "../components/TextInputIcon.component"
 import { IconEmail, IconGoogle, IconPassword, IconUser } from "../components/Icon.component"
@@ -16,6 +16,7 @@ import { googleAuth } from "../services/firebase/firebaseService"
 export default function AuthForm(){
     const [isLoading, setIsLoading] = useState(false)
     const { user } = useSelector((state) => state.user)
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const type = pathname.slice(1)
@@ -32,6 +33,8 @@ export default function AuthForm(){
             dispatch(handleAuthUser(user.data))
             storeInSession("data", JSON.stringify(user.data))
             setIsLoading(false)
+            setTimeout(() => navigate('/'), 1000)
+            
         }catch(err){
             toast.error(err.response.data.message)
             setIsLoading(false)
@@ -49,6 +52,7 @@ export default function AuthForm(){
             dispatch(handleAuthUser(user.data))
             storeInSession("data", JSON.stringify(user.data))
             setIsLoading(false)
+            setTimeout(() => navigate('/'), 1000)
         }catch(err){
             toast.error(err.response.data.message)
             setIsLoading(false)
