@@ -29,7 +29,7 @@ const PublishForm = () => {
             const tag = e.target.value
 
             if(tag && tag !== " "){
-                if(post.tags.length === tagsLimit) return toast.error("You have reached the limit")
+                if(post.tags.length >= tagsLimit) return toast.error("You have reached the limit")
                 if(post.tags.includes(tag)) return toast.error("You have the same tag")
 
                 dispatch(setDataPost({ ...post, tags: [...post.tags, tag] }))
@@ -41,6 +41,11 @@ const PublishForm = () => {
 
     const handlePublishForm = (e) => {
         e.preventDefault()
+        
+        if(!post.title) return toast.error("You must provide a title to publish the blog")
+        if(!post.desc || !post.desc >= 200) return toast.error("You must provide a description and under 200 characters to publish the blog")
+        if(!post.tags.length || post.tags.length >= tagsLimit) return toast.error("You must provide tag and max 10 tag to publish")
+        
         console.log(post)
     }
 

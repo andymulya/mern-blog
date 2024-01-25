@@ -1,9 +1,9 @@
 import express from 'express'
-import { getPost } from '../controllers/postController.js'
-import { authorization } from '../middlewares/index.js'
+import { createPost } from '../controllers/postController.js'
+import { verifyToken } from '../middlewares/index.js'
 
 const router = express.Router()
 
-router.get('/', authorization, getPost)
+router.post('/create-post', verifyToken, createPost)
 
 export default router

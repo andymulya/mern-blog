@@ -11,7 +11,7 @@ export const errorCustomHandler = (statusCode, message) => {
 }
 
 export const generateToken = (value) => jwt.sign(value, process.env.JWT_SECRET)
-export const compareToken = (value) => jwt.verify(value, process.env.JWT_SECRET)
+export const compareToken = (value, next) => jwt.verify(value, process.env.JWT_SECRET)
 
 export const hashString = async (val) => {
     try{

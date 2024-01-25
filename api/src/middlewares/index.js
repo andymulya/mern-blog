@@ -50,13 +50,15 @@ export const signInValidation = async (req, res, next) => {
     next()
 }
 
-export const authorization = async (req, res, next) => {
+export const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token
 
-    if(!token) return next(errorCustomHandler(403, "Access denide"))
+    if(!token) return next(errorCustomHandler(401, "No access token"))
 
     try{
         const decode = compareToken(token)
+        if(!decode) return next(errorCustomHandler(403, "Access is invalid"))
+
         req.userId = decode.userId
         next()
     }catch(err){
