@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { nanoid } from 'nanoid'
 
 export const errorCustomHandler = (statusCode, message) => {
     const err = new Error()
@@ -40,3 +41,9 @@ export const formatDataToSend = (values) => {
         ...data1
     }
 }
+
+// Akan mengubah special karakter pada string menjadi spasi,
+// menghapus spasi diawal dan diakhir string
+// dan setelahnya akan mengubah spasi menjadi "-"
+
+export const createSlug = (string) => `${string.replace(/[^a-zA-Z0-9]/g, ' ').trim().replace(/\s+/g, '-').toLowerCase()}-${nanoid()}`

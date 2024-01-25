@@ -16,10 +16,15 @@ const postSlice = createSlice({
         setDataPost: (state, action) => {
             state = action.payload
             return state
+        },
+        setInitDataPost: (state) => {
+            state = initialState
+
+            return state
         }
     }
 })
 
-export const { setDataPost } = postSlice.actions
+export const { setDataPost, setInitDataPost } = postSlice.actions
 export default postSlice.reducer
 

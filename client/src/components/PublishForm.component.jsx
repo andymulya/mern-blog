@@ -1,13 +1,18 @@
 import { useDispatch, useSelector } from "react-redux"
 import { AnimationWrapper } from "./Animations.component"
 import { getDataForm } from "../utils"
-import { setDataPost } from "../redux/slices/postSlice"
+import { setDataPost, setInitDataPost } from "../redux/slices/postSlice"
 import Tag from "./Tag.component"
 import toast from "react-hot-toast"
+import { useState } from "react"
+import { postBlog } from "../services/baseApi"
+import { useNavigate } from "react-router-dom"
 
 
 const PublishForm = () => {
     const post = useSelector((state) => state.post)
+    const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
     const characterLimitDesc = 200
     const tagsLimit = 10
@@ -26,10 +31,10 @@ const PublishForm = () => {
     const handleKeyDownTag = (e) => {
         if(e.key === "Enter" || e.keyCode === 13){
             e.preventDefault()
-            const tag = e.target.value
+            const tag = e.target.value.trim()
 
-            if(tag && tag !== " "){
-                if(post.tags.length >= tagsLimit) return toast.error("You have reached the limit")
+            if(tag){
+                if(post.tags.length == tagsLimit) return toast.error("You have reached the limit")
                 if(post.tags.includes(tag)) return toast.error("You have the same tag")
 
                 dispatch(setDataPost({ ...post, tags: [...post.tags, tag] }))
@@ -39,14 +44,33 @@ const PublishForm = () => {
         }
     }
 
-    const handlePublishForm = (e) => {
+    const handlePublishForm = async (e) => {
         e.preventDefault()
         
         if(!post.title) return toast.error("You must provide a title to publish the blog")
-        if(!post.desc || !post.desc >= 200) return toast.error("You must provide a description and under 200 characters to publish the blog")
-        if(!post.tags.length || post.tags.length >= tagsLimit) return toast.error("You must provide tag and max 10 tag to publish")
+        if(!post.desc || !post.desc > 200) return toast.error("You must provide a description and under 200 characters to publish the blog")
+        if(!post.tags.length || post.tags.length > tagsLimit) return toast.error("You must provide tag and max 10 tag to publish")
         
-        console.log(post)
+        const loading = toast.loading("Publishing....")
+
+        try{
+            setIsLoading(true)
+            const data = await postBlog("/create-post", post)
+            console.log(data)
+            setIsLoading(false)
+            toast.dismiss(loading)
+            toast.success("Published success")
+
+            setTimeout(() => {
+                dispatch(setInitDataPost())
+                navigate('/')
+            }, 1000)
+        }catch(err){
+            setIsLoading(false)
+            toast.dismiss(loading)
+            toast.error(err.response.data.message)
+        }
+        
     }
 
 
@@ -97,7 +121,7 @@ const PublishForm = () => {
                             <span className="text-right inline-block w-full mt-1 text-sm text-gray-500">{ tagsLimit - post.tags.length } tags left</span>
                         </div>
 
-                        <button className="btn bg-blue-700 font-medium text-white">Publish</button>
+                        <button disabled={ isLoading } className="btn bg-blue-700 font-medium text-white disabled:opacity-70">{ (isLoading) ? "Loading ..." : "Publish"}</button>
                     </form>
                 </section>
             </section>

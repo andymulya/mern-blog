@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { removeFromSession } from "../services/session"
 import { useState } from "react"
 import { handleSignOutUser } from "../redux/slices/userSlice"
+import { setInitDataPost } from "../redux/slices/postSlice"
 
 
 const UserNavigationPanel = () => {
@@ -16,6 +17,7 @@ const UserNavigationPanel = () => {
         try{
             setIsLoading(true)
             removeFromSession("data")
+            dispatch(setInitDataPost())
             dispatch(handleSignOutUser())
             setIsLoading(false)
         }catch(err){ 

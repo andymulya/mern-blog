@@ -7,7 +7,8 @@ const Tag = ({ name }) => {
     const post = useSelector((state) => state.post)
     const dispatch = useDispatch()
 
-    const handleDeleteTag = () => {
+    const handleDeleteTag = (e) => {
+        e.preventDefault()
         const tags = post.tags.filter((tag) => tag !== name)
         dispatch(setDataPost({ ...post, tags }))
     }

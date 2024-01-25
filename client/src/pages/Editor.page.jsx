@@ -26,14 +26,14 @@ export default function Editor() {
         const loading = toast.loading("Save ...")
 
         try{
-            const save = await editorCore.current.dangerouslyLowLevelInstance?.save()
+            const body = await editorCore.current.dangerouslyLowLevelInstance?.save()
 
-            if(save.blocks.length === 0){
+            if(!body.blocks.length){
                 toast.dismiss(loading)
                 return toast.error("Write something in your blog to publish it")
             }
 
-            dispatch(setDataPost({ ...post, body: save.blocks }))
+            dispatch(setDataPost({ ...post, body: body.blocks }))
             toast.dismiss(loading)
             toast.success("Success")
             setStateEditor("publish")
