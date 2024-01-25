@@ -22,7 +22,7 @@ const BlogBanner = () => {
                 dispatch(setDataPost({ ...post, banner: urlImage }))
                 bannerBlogImageRef.current.src = urlImage
                 toast.dismiss(loading)
-                toast.success("Success")
+                toast.success("Uploaded")
             }catch(err){
                 toast.dismiss(loading)
                 toast.error(err)

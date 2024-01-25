@@ -2,23 +2,30 @@ import { useCallback, useRef, useState } from "react"
 import BlogEditor from "../components/BlogEditor.component"
 import PublishForm from "../components/PublishForm.component"
 import { useDispatch, useSelector } from "react-redux"
-import { setDataPost } from "../redux/slices/postSlice"
+import { setDataPost, setInitDataPost } from "../redux/slices/postSlice"
 import toast from "react-hot-toast"
 import Logo from "../components/Logo.component"
 import { IconArrowLeft } from "../components/Icon.component"
+import { postBlog } from "../services/baseApi"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Editor() {
     const post = useSelector((state) => state.post)
+    const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
     const[stateEditor, setStateEditor] = useState("editor")
     const editorCore = useRef(null)
+    const navigate = useNavigate()
 
-    const handleBlogBody = useCallback((intance) => {
+
+    const handleInitialize = useCallback((intance) => {
         editorCore.current = intance
     }, [])
 
-    const handleSave = useCallback(async () => {
+    const handleBlogBody = useCallback(async () => editorCore.current.dangerouslyLowLevelInstance?.save(), [])
+
+    const handleSave = async () => {
 
         if(!post.banner) return toast.error("Upload a blog banner to publish it")
         if(!post.title) return toast.error("Write blog title to publish it")
@@ -26,13 +33,13 @@ export default function Editor() {
         const loading = toast.loading("Save ...")
 
         try{
-            const body = await editorCore.current.dangerouslyLowLevelInstance?.save()
+            const body = await handleBlogBody()
 
             if(!body.blocks.length){
                 toast.dismiss(loading)
                 return toast.error("Write something in your blog to publish it")
             }
-
+            
             dispatch(setDataPost({ ...post, body: body.blocks }))
             toast.dismiss(loading)
             toast.success("Success")
@@ -41,7 +48,35 @@ export default function Editor() {
             toast.dismiss(loading)
             toast.error(err)
         }
-    }, [dispatch, post])
+    }
+
+    const handleSaveDraft = async () => {
+        if(!post.title) return toast.error("Write blog title to publish it")
+
+        const loading = toast.loading("Saving draft ...")
+
+        try{
+
+            const body = await handleBlogBody()
+
+            setIsLoading(true)
+            const data = await postBlog("/create-post", { ...post, body: body.blocks, draft: true })
+            console.log(data)
+            setIsLoading(false)
+            toast.dismiss(loading)
+            toast.success("Saved")
+
+            setTimeout(() => {
+                dispatch(setInitDataPost())
+                navigate('/')
+            }, 1000)
+
+        }catch(err){
+            setIsLoading(false)
+            toast.dismiss(loading)
+            toast.error(err.response.data.message)
+        }
+    }
 
 
     return (
@@ -51,8 +86,8 @@ export default function Editor() {
                 <nav className="navbar justify-between">
                     <Logo />
                     <div className="flex gap-2 whitespace-nowrap">
-                        <button className="btn-small bg-blue-800 text-white font-semibold" onClick={ handleSave }>Publish</button>
-                        <button className="btn-small bg-blue-100 text-blue-800 font-semibold" onClick={() => {}}>Save Draft</button>
+                        <button disabled={ isLoading } className="btn-small bg-blue-800 text-white font-semibold disabled:opacity-75" onClick={ handleSave }>Publish</button>
+                        <button disabled={ isLoading } className="btn-small bg-blue-100 text-blue-800 font-semibold disabled:opacity-75" onClick={ handleSaveDraft }>Save Draft</button>
                     </div>
                 </nav>:
                 <nav className="navbar justify-between">
@@ -64,7 +99,7 @@ export default function Editor() {
             }
             {
                 (stateEditor === "editor") ? 
-                <BlogEditor handleBlogBody={ handleBlogBody } />:
+                <BlogEditor handleInitialize={ handleInitialize } />:
                 <PublishForm />
             }
         </>

@@ -13,20 +13,16 @@ const blogSchema = mongoose.Schema({
     },
     banner: {
         type: String,
-        required: true,
     },
     desc: {
         type: String,
         maxlength: 200,
-        required: true
     },
     body: {
         type: [],
-        required: true
     },
     tags: {
         type: [String],
-        required: true
     },
     author: {
         type: Schema.Types.ObjectId,

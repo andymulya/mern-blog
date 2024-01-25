@@ -6,7 +6,7 @@ import BlogBody from "./BlogBody.component"
 import BlogTitle from './BlogTitle.component'
 
 
-const BlogEditor = ({ handleBlogBody }) => {
+const BlogEditor = ({ handleInitialize }) => {
 
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
@@ -17,14 +17,14 @@ const BlogEditor = ({ handleBlogBody }) => {
 
                 <Divider title={"content"} style={"my-0"} />
 
-                <BlogBody handleInitialize={ handleBlogBody } />
+                <BlogBody handleInitialize={ handleInitialize } />
             </section>
         </AnimationWrapper>
     )
 }
 
 BlogEditor.propTypes = {
-    handleBlogBody: PropTypes.func
+    handleInitialize: PropTypes.func
 }
 
 export default BlogEditor

@@ -90,23 +90,18 @@ export const googleOauthValidation = async (req, res, next) => {
 
 }
 
-// blogSlug,
-// title,
-// banner,
-// desc,
-// body,
-// tags: newTags,
-// author: authorId,
-// draft: Boolean(draft)
 
 export const createPostValidation = (req, res, next) => {
     const { banner, title, body, desc, tags, draft } = req.body
 
-    if(!banner) return next(errorCustomHandler(403, "You must provide a banner to publish the blog"))
-    if(!title) return next(errorCustomHandler(403, "You must provide a title to publish the blog"))
-    if(!desc || desc > 200) return next(errorCustomHandler(403, "You must provide a description and under 200 characters to publish the blog"))
-    if(!tags.length || tags.length > 10) return next(errorCustomHandler(403, "You must provide tags and max 10 tags to publish the blog"))
-    if(!body.length) return next(errorCustomHandler(403, "There must be some blog content to publish it"))
+    if(!title) return next(errorCustomHandler(403, "You must provide a title the blog"))
+    
+    if(!draft){
+        if(!banner) return next(errorCustomHandler(403, "You must provide a banner to publish the blog"))
+        if(!desc || desc > 200) return next(errorCustomHandler(403, "You must provide a description and under 200 characters to publish the blog"))
+        if(!tags.length || tags.length > 10) return next(errorCustomHandler(403, "You must provide tags and max 10 tags to publish the blog"))
+        if(!body.length) return next(errorCustomHandler(403, "There must be some blog content to publish it"))
+    }
 
     const newTags = tags.map((tag) => tag.toLowerCase())
     const blogSlug = createSlug(title)

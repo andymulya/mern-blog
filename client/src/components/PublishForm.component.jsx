@@ -49,17 +49,17 @@ const PublishForm = () => {
         
         if(!post.title) return toast.error("You must provide a title to publish the blog")
         if(!post.desc || !post.desc > 200) return toast.error("You must provide a description and under 200 characters to publish the blog")
-        if(!post.tags.length || post.tags.length > tagsLimit) return toast.error("You must provide tag and max 10 tag to publish")
+        if(!post.tags.length || post.tags.length > 10) return toast.error("You must provide tag and max 10 tag to publish")
         
         const loading = toast.loading("Publishing....")
 
         try{
             setIsLoading(true)
-            const data = await postBlog("/create-post", post)
+            const data = await postBlog("/create-post", { ...post, draft: false })
             console.log(data)
             setIsLoading(false)
             toast.dismiss(loading)
-            toast.success("Published success")
+            toast.success("Published")
 
             setTimeout(() => {
                 dispatch(setInitDataPost())
