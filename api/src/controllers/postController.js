@@ -5,8 +5,6 @@ import User from "../models/User.js"
 export const createPost = async (req, res, next) => {
     const { blogSlug, title, banner, desc, body, tags, author, draft } = req.post
     
-
-
     try{
         const blog = await Blog.create({
             blogSlug,
@@ -27,6 +25,31 @@ export const createPost = async (req, res, next) => {
             message: "Created is succesfully",
             data:{
                 slug: blog.blogSlug
+            }
+        })
+    }catch(err){
+        next(err)
+    }
+}
+
+export const getLatestBlog = async (req, res, next) => {
+
+    let maxLimit = 5
+
+    try{
+        const blogs = await Blog.find({ draft: false })
+        .select("blogSlug title banner desc tags activity createdAt -_id")
+        .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
+        .sort({ createAt: -1 })
+        .limit(maxLimit)
+
+        if(!blogs) return next()
+    
+        res.status(200).json({
+            success: true,
+            message: "Success",
+            data: {
+                blogs
             }
         })
     }catch(err){

@@ -27,7 +27,7 @@ const blogSchema = mongoose.Schema({
     author: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'users'
+        ref: 'Users'
     },
     activity: {
         totalLikes: {
