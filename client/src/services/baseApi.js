@@ -26,3 +26,12 @@ export const getBlogs = async (endPoint) => {
         if(err) throw err
     }
 }
+
+export const getBlogsByCategory = async (payload) => {
+    try{
+        const res = await axios.post(`/post/search-blogs-category`, payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}

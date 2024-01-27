@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { AnimationWrapper } from "../components/Animations.component"
 import InPageNavigate from "../components/InPageNavigate.component"
-import { getBlogs } from "../services/baseApi"
+import { getBlogs, getBlogsByCategory } from "../services/baseApi"
 import toast from "react-hot-toast"
 import BlogPostCard from "../components/BlogPostCard"
 import MinimalBlogPostCard from "../components/MinimalBlogPostCard"
@@ -9,7 +9,7 @@ import { IconGraph } from "../components/Icon.component"
 
 
 export default function Home() {
-    const [latestBlogs, setLatestBlogs] = useState([])
+    const [blogs, setBlogs] = useState([])
     const [trendingBlogs, setTrendingBlogs] = useState([])
     const [pageState, setPageState] = useState("home")
 
@@ -18,7 +18,7 @@ export default function Home() {
     const handleBlogByCategory = (e) => {
         const category = e.target.innerHTML.toLowerCase()
         
-        setLatestBlogs(null)
+        setBlogs(null)
         if(pageState === category) return setPageState("home")
 
         setPageState(category)
@@ -26,10 +26,10 @@ export default function Home() {
     
 
     useEffect(() => {
-        async function fetchLatestBlog(){
+        async function fetchLatestBlogs(){
             try{
                 const { blogs } = await getBlogs("/latest-blogs")
-                setLatestBlogs(blogs)
+                setBlogs(blogs)
             }catch(err){
                 return toast.error(err.response.data.message)
             }
@@ -44,10 +44,20 @@ export default function Home() {
             }
         }
 
-        if(pageState === "home") fetchLatestBlog()
+        async function fetchBlogByCategory(){
+            try{
+                const { blogs } = await getBlogsByCategory({ tag: pageState })
+                setBlogs(blogs)
+            }catch(err){
+                return toast.error(err.response.data.message)
+            }
+        }
 
-        fetchTrendingBlogs()
-    }, [pageState])
+        if(pageState === "home") fetchLatestBlogs()
+        fetchBlogByCategory()
+
+        if(!trendingBlogs) fetchTrendingBlogs()
+    }, [pageState, trendingBlogs])
 
 
     return (
@@ -60,9 +70,9 @@ export default function Home() {
                         
                         {/* Latest Blogs */}
                         {  
-                            (!latestBlogs) ? 
+                            (!blogs) ? 
                             <span>Loading ...</span> :
-                            latestBlogs.map((blog, i) => {
+                            blogs.map((blog, i) => {
                                 return (
                                     <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
                                         <BlogPostCard blog={ blog } />

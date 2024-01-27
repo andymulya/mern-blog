@@ -7,6 +7,6 @@ const router = express.Router()
 router.post('/create-post', [verifyToken, createPostValidation], createPost)
 router.get('/latest-blogs', getLatestBlog)
 router.get('/trending-blogs', getTrendingBlogs)
-router.get('/search-blogs-category', getBlogsByCategory)
+router.post('/search-blogs-category', getBlogsByCategory)
 
 export default router
