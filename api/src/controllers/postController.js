@@ -40,7 +40,7 @@ export const getLatestBlog = async (req, res, next) => {
         const blogs = await Blog.find({ draft: false })
         .select("blogSlug title banner desc tags activity createdAt -_id")
         .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
-        .sort({ createAt: -1 })
+        .sort({ createdAt: -1 })
         .limit(maxLimit)
 
         if(!blogs) return next()

@@ -56,4 +56,8 @@
     #textEditor *{
         @apply text-lg leading-10 md:text-xl;
     }
+
+    .tag {
+        @apply bg-blue-700 text-white capitalize rounded-full py-1 px-3 font-medium whitespace-nowrap
+    }
 }

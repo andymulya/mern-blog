@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AnimationWrapper } from "./Animations.component"
 import { getDataForm } from "../utils"
 import { setDataPost, setInitDataPost } from "../redux/slices/postSlice"
-import Tag from "./Tag.component"
+import TagWithDelete from "./TagWithDelete.component"
 import toast from "react-hot-toast"
 import { useState } from "react"
 import { createBlog } from "../services/baseApi"
@@ -113,7 +113,7 @@ const PublishForm = () => {
                                 
                                 <div className="flex flex-row flex-wrap gap-1 mt-5 justify-center">
                                     {
-                                        (post.tags.length !== 0) && post.tags.map((tag, i) => <Tag key={ i } name={ tag } />)
+                                        (post.tags.length !== 0) && post.tags.map((tag, i) => <TagWithDelete key={ i } name={ tag } />)
                                     }
                                 </div>
                             </div>

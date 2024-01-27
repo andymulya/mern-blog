@@ -18,9 +18,9 @@ export const createBlog = async (endPoint, payload) => {
     }
 }
 
-export const getBlogs = async () => {
+export const getBlogs = async (endPoint) => {
     try{
-        const res = await axios.get("/post/latest-blogs")
+        const res = await axios.get(`/post${endPoint}`)
         return res.data
     }catch(err){
         if(err) throw err

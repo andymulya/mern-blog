@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { formaterDay } from '../utils'
 import { IconLike } from './Icon.component'
+import BlogPostHeaderCard from './BlogPostHeaderCard'
 
 const BlogPostCard = ({ blog }) => {
     const { blogSlug: slug, title, desc, banner, tags, author:{ personalInfo }, activity: { totalLikes }, createdAt } = blog
@@ -9,17 +9,13 @@ const BlogPostCard = ({ blog }) => {
     return (
         <Link to={`/blog/${slug}`} className="flex gap-5 items-center border-b border-gray-300 mb-10">
             <div className="w-full">
-                <div className="flex gap-2 items-center mb-5 text-sm md:text-base">
-                    <img src={ personalInfo.profileImg } alt={ personalInfo.fullName } className="w-7 rounded-full" />
-                    <p className="line-clamp-1">{ `${personalInfo.fullName} @${personalInfo.username}` }</p>
-                    <p className="min-w-fit">{ formaterDay(createdAt) }</p>
-                </div>
+                <BlogPostHeaderCard fullName={ personalInfo.fullName } username={ personalInfo.username } profileImg={ personalInfo.profileImg } timestamp={ createdAt } />
                 
-                <h1 className="font-semibold text-lg md:text-xl mb-3">{ title }</h1>
+                <h1 className="font-semibold text-xl md:text-2xl mb-3">{ title }</h1>
                 <p className="leading-6 line-clamp-2 text-gray-600 text-sm md:text-base">{ desc }</p>
                 
                 <div className="flex gap-3 items-center">
-                    <span className="bg-blue-700 my-5 text-white rounded-full py-1 px-3 font-medium">{ tags[0] }</span>
+                    <span className="tag my-5">{ tags[0] }</span>
                     <span className="flex justify-center gap-1">
                         <IconLike />
                         { totalLikes }
