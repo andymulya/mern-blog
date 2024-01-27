@@ -58,6 +58,6 @@
     }
 
     .tag {
-        @apply bg-blue-700 text-white capitalize rounded-full py-1 px-3 font-medium whitespace-nowrap
+        @apply bg-blue-700 text-white capitalize rounded-full py-1 px-4 font-medium whitespace-nowrap
     }
 }

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import { useEffect, useRef, useState } from "react"
 
+
 const InPageNavigate = ({ routes, defaultHiddenRoutes, defaultTabIndex = 0, children }) => {
     const activeTabLineRef = useRef()
     const activeTabRef = useRef()
@@ -15,7 +16,7 @@ const InPageNavigate = ({ routes, defaultHiddenRoutes, defaultTabIndex = 0, chil
     
     useEffect(() => {
         changeNavState(activeTabRef.current, inPageNavIndex)
-    }, [inPageNavIndex])
+    }, [inPageNavIndex, routes])
 
     return (
         <section>

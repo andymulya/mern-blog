@@ -15,12 +15,12 @@ export default function Home() {
 
     const categories = ["programming", "film making", "social media", "cooking", "tech", "finances", "travel"]
 
-    const handleBlogByCategorie = (e) => {
+    const handleBlogByCategory = (e) => {
         const category = e.target.innerHTML.toLowerCase()
         
+        setLatestBlogs(null)
         if(pageState === category) return setPageState("home")
 
-        
         setPageState(category)
     }
     
@@ -44,9 +44,10 @@ export default function Home() {
             }
         }
 
+        if(pageState === "home") fetchLatestBlog()
+
         fetchTrendingBlogs()
-        fetchLatestBlog()
-    }, [])
+    }, [pageState])
 
 
     return (
@@ -55,7 +56,7 @@ export default function Home() {
                 
                 {/* InPageNavigate */}
                 <section className="w-full">
-                    <InPageNavigate routes={["home", "trending blogs"]} defaultHiddenRoutes={["trending blogs"]} >
+                    <InPageNavigate routes={[pageState, "trending blogs"]} defaultHiddenRoutes={["trending blogs"]} >
                         
                         {/* Latest Blogs */}
                         {  
@@ -95,7 +96,7 @@ export default function Home() {
                         {
                             categories.map((cat, i) =>{
                                 return (
-                                    <button key={ i } className={`tag mb-2 mr-2 capitalize ${(pageState === cat) && "bg-black"}`} onClick={ handleBlogByCategorie }>
+                                    <button key={ i } className={`tag mb-2 mr-2 capitalize ${(pageState === cat) && "bg-black"}`} onClick={ handleBlogByCategory }>
                                         { cat }
                                     </button>
                                 )
