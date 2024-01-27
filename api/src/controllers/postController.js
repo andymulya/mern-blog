@@ -54,3 +54,25 @@ export const getLatestBlog = async (req, res, next) => {
         next(err)
     }
 }
+
+export const getTrendingBlogs = async (req, res, next) => {
+
+    try{
+        const blogs = await Blog.find({ draft: false })
+        .select("blogSlug title createdAt -_id")
+        .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
+        .sort({"activity.totalRead": -1, "activity.totalLike": -1, createdAt: -1})
+        .limit(5)
+
+        if(!blogs) return next()
+
+        res.status(200).json({
+            success: true,
+            message: "Success",
+            blogs
+        })
+    }catch(err){
+        next(err)
+    }
+    
+}
