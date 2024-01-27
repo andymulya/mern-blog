@@ -1,11 +1,11 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import axios from 'axios'
+import { useEffect } from 'react'
 import { useDispatch } from "react-redux"
 import { Toaster } from 'react-hot-toast'
 import { Layout } from './layouts/Layout'
 import AuthForm from './pages/AuthForm.page'
 import Editor from './pages/Editor.page'
-import axios from 'axios'
-import { useEffect } from 'react'
 import { lookInSession } from './services/session'
 import { handleAuthUser } from "./redux/slices/userSlice"
 import Home from './pages/Home.page'

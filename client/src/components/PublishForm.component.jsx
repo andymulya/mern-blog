@@ -5,7 +5,7 @@ import { setDataPost, setInitDataPost } from "../redux/slices/postSlice"
 import Tag from "./Tag.component"
 import toast from "react-hot-toast"
 import { useState } from "react"
-import { postBlog } from "../services/baseApi"
+import { createBlog } from "../services/baseApi"
 import { useNavigate } from "react-router-dom"
 
 
@@ -55,8 +55,7 @@ const PublishForm = () => {
 
         try{
             setIsLoading(true)
-            const data = await postBlog("/create-post", { ...post, draft: false })
-            console.log(data)
+            await createBlog("/create-post", { ...post, draft: false })
             setIsLoading(false)
             toast.dismiss(loading)
             toast.success("Published")

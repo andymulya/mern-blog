@@ -6,7 +6,7 @@ import { setDataPost, setInitDataPost } from "../redux/slices/postSlice"
 import toast from "react-hot-toast"
 import Logo from "../components/Logo.component"
 import { IconArrowLeft } from "../components/Icon.component"
-import { postBlog } from "../services/baseApi"
+import { createBlog } from "../services/baseApi"
 import { useNavigate } from "react-router-dom"
 
 
@@ -60,8 +60,7 @@ export default function Editor() {
             const body = await handleBlogBody()
 
             setIsLoading(true)
-            const data = await postBlog("/create-post", { ...post, body: body.blocks, draft: true })
-            console.log(data)
+            await createBlog("/create-post", { ...post, body: body.blocks, draft: true })
             setIsLoading(false)
             toast.dismiss(loading)
             toast.success("Saved")

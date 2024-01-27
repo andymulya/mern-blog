@@ -25,6 +25,14 @@ export const getDataForm = (formRef) => {
     }
 }
 
+export const formaterDay = (timestamp) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    // const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+    const date = new Date(timestamp)
+    return `${date.getDate()} ${months[date.getMonth()]}`
+}
+
 export const generateFileName = (username) => (`${new Date().getTime()} - ${ username }`)
 
 
