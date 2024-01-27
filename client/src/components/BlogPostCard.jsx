@@ -7,7 +7,7 @@ const BlogPostCard = ({ blog }) => {
     const { blogSlug: slug, title, desc, banner, tags, author:{ personalInfo }, activity: { totalLikes }, createdAt } = blog
 
     return (
-        <Link className="flex gap-5 items-center border-b border-gray-300 mb-10">
+        <Link to={`/blog/${slug}`} className="flex gap-5 items-center border-b border-gray-300 mb-10">
             <div className="w-full">
                 <div className="flex gap-2 items-center mb-5 text-sm md:text-base">
                     <img src={ personalInfo.profileImg } alt={ personalInfo.fullName } className="w-7 rounded-full" />
