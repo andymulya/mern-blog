@@ -71,8 +71,34 @@ export const getTrendingBlogs = async (req, res, next) => {
             message: "Success",
             blogs
         })
+
     }catch(err){
         next(err)
     }
     
+}
+
+export const getBlogsByCategory = async (req, res, next) => {
+    const { tag } = req.body
+    let maxLimit = 5
+
+    try{
+
+        const blogs = await Blog.find({ draft: false, tags: tag })
+        .select("blogSlug title banner desc tags activity createdAt -_id")
+        .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
+        .sort({ createdAt: -1 })
+        .limit(maxLimit)
+
+        if(!blogs) return next()
+
+        res.status(200).json({
+            success: true,
+            message: "Success",
+            blogs
+        })
+    }catch(err){
+        next(err)
+    }
+
 }
