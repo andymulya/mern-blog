@@ -3,14 +3,15 @@ import { AnimationWrapper } from "../components/Animations.component"
 import InPageNavigate from "../components/InPageNavigate.component"
 import { getBlogs, getBlogsByCategory } from "../services/baseApi"
 import toast from "react-hot-toast"
-import BlogPostCard from "../components/BlogPostCard"
-import MinimalBlogPostCard from "../components/MinimalBlogPostCard"
+import BlogPostCard from "../components/BlogPostCard.component"
+import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
 import { IconGraph } from "../components/Icon.component"
+import NoDataMessage from "../components/NoDataMessage.component"
 
 
 export default function Home() {
-    const [blogs, setBlogs] = useState([])
-    const [trendingBlogs, setTrendingBlogs] = useState([])
+    const [blogs, setBlogs] = useState(null)
+    const [trendingBlogs, setTrendingBlogs] = useState(null)
     const [pageState, setPageState] = useState("home")
 
     const categories = ["programming", "film making", "social media", "cooking", "tech", "finances", "travel"]
@@ -53,8 +54,11 @@ export default function Home() {
             }
         }
 
-        if(pageState === "home") fetchLatestBlogs()
-        fetchBlogByCategory()
+        if(pageState === "home"){
+            fetchLatestBlogs()
+        }else{
+            fetchBlogByCategory()
+        }
 
         if(!trendingBlogs) fetchTrendingBlogs()
     }, [pageState, trendingBlogs])
@@ -72,26 +76,28 @@ export default function Home() {
                         {  
                             (!blogs) ? 
                             <span>Loading ...</span> :
+                            (blogs.length) ?
                             blogs.map((blog, i) => {
                                 return (
                                     <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
                                         <BlogPostCard blog={ blog } />
                                     </AnimationWrapper>
                                 )
-                            })
+                            }): <NoDataMessage message={"No blogs published"} />
                         }
 
                         {/* Trending Blogs */}
                         {
                             (!trendingBlogs) ? 
                             <span>Loading ...</span> :
+                            (trendingBlogs.length) ?
                             trendingBlogs.map((blog, i) => {
                                 return (
                                     <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
                                         <MinimalBlogPostCard blog={ blog } index={ i } />
                                     </AnimationWrapper>
                                 )
-                            })
+                            }): <NoDataMessage message={"No trending blogs"} />
                         }
                         <div>Trending blogs</div>
                     </InPageNavigate>
@@ -122,13 +128,14 @@ export default function Home() {
                         {
                             (!trendingBlogs) ? 
                             <span>Loading ...</span> :
+                            (trendingBlogs.length) ?
                             trendingBlogs.map((blog, i) => {
                                 return (
                                     <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
                                         <MinimalBlogPostCard blog={ blog } index={ i } />
                                     </AnimationWrapper>
                                 )
-                            })
+                            }) : <NoDataMessage message={"No trending blog"} />
                         }
                     </div>
                 </section>

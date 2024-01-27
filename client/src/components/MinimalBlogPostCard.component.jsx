@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import BlogPostHeaderCard from "./BlogPostHeaderCard"
+import BlogPostHeaderCard from "./BlogPostHeaderCard.component"
 
 const MinimalBlogPostCard = ({ blog: { blogSLug: slug, title, createdAt, author: { personalInfo } }, index }) => {
     

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { IconLike } from './Icon.component'
-import BlogPostHeaderCard from './BlogPostHeaderCard'
+import BlogPostHeaderCard from './BlogPostHeaderCard.component'
 
 const BlogPostCard = ({ blog }) => {
     const { blogSlug: slug, title, desc, banner, tags, author:{ personalInfo }, activity: { totalLikes }, createdAt } = blog
