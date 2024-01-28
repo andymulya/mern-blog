@@ -5,7 +5,7 @@ import { getBlogs, getBlogsByCategory } from "../services/baseApi"
 import toast from "react-hot-toast"
 import BlogPostCard from "../components/BlogPostCard.component"
 import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
-import { IconGraph } from "../components/Icon.component"
+import { IconBack, IconGraph, IconHome } from "../components/Icon.component"
 import NoDataMessage from "../components/NoDataMessage.component"
 
 
@@ -86,20 +86,32 @@ export default function Home() {
                             }): <NoDataMessage message={"No blogs published"} />
                         }
 
-                        {/* Trending Blogs */}
-                        {
-                            (!trendingBlogs) ? 
-                            <span>Loading ...</span> :
-                            (trendingBlogs.length) ?
-                            trendingBlogs.map((blog, i) => {
-                                return (
-                                    <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
-                                        <MinimalBlogPostCard blog={ blog } index={ i } />
-                                    </AnimationWrapper>
-                                )
-                            }): <NoDataMessage message={"No trending blogs"} />
-                        }
-                        <div>Trending blogs</div>
+                        {/* Ui trending blogs for mobile */}
+                        <div>
+                            {
+                                (!trendingBlogs) ? 
+                                <span>Loading ...</span> :
+                                (trendingBlogs.length) ?
+                                trendingBlogs.map((blog, i) => {
+                                    return (
+                                        <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
+                                            <div className="md:hidden">
+                                                <MinimalBlogPostCard blog={ blog } index={ i } />
+                                            </div>
+                                        </AnimationWrapper>
+                                    )
+                                }): <NoDataMessage message={"No trending blogs"} />
+                            }
+
+                            {/* Back to home, when ui trending blogs for mobile is hidden */}
+                            <section className="flex flex-col items-center mx-auto">
+                                <IconHome />
+                                <div className="flex items-center font-medium">
+                                    <IconBack />
+                                    <span>Back to Home</span>
+                                </div>
+                            </section>
+                        </div>
                     </InPageNavigate>
                 </section>
                 

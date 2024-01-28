@@ -142,3 +142,7 @@ export const IconGraph = () => {
         </svg>
     )
 }
+
+export const IconHome = () => <img src="https://img.icons8.com/clouds/200/1FB141/home-page.png"/>
+
+export const IconBack = () => <img width={30} height={30} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAABpklEQVR4nO2du07DQBBF7wZFfB9UfE54hNBCeJW8RUO3XxchhQYapCjKCnzXM+dI7lfnzqztxB5LAAAAAAAAABCbPUnPko7cC8kq/03SWtInIfjk/xyEMKD811/yCWFA+S8b5BNCB/IJYcA9f9vx/l+LyXqpud7h+JA0dS88ivwn5PvkPyLfwwT5XvkPVL6HIuke+chPWfl3VL5P/i3ykZ+y8m+ofOSnrPxrKh/5KSt/SeX75F8hH/kpK/+SyvdxgXzkp2RB5fs4Rz7yUzKn8n2cIR/5KTml8n2cIN8H8o0cU/k+ZsgfVwBV0r55zcq+BVVC8J+EKyEQQkh2vRGrdIL/d6BKCIQQkjmdML5/wyrbESGEZEEnjO+ZoMp2RAjhKA2PJtIJHTwZXdmOCCEcpeEFDTqhg/fDKtsRIYSjNLwjTCcQQjxKw5wIOoEQ4lEaxtXQCR1My6pcohJCOCYNQ/vohA7GVhJCB4NbCaGD0cWE0MHwbkL4YxhfP7IPOKwkHbgXnDWEFfJ9H/FBvvGcgHxjCMg3Mf3+WM+hawEAAAAAAAAASssXn0dWxXFL6EAAAAAASUVORK5CYII=" />
