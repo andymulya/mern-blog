@@ -14,7 +14,10 @@ export default function Home() {
     const [data, setData] = useState(null)
     const [trendingBlogs, setTrendingBlogs] = useState(null)
     const [pageState, setPageState] = useState("home")
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState({
+        latestBlogs: 1,
+        blogsByCategory: 1
+    })
     const categories = ["programming", "film making", "social media", "cooking", "tech", "finances", "travel"]
 
 
@@ -29,8 +32,8 @@ export default function Home() {
 
     const fetchLatestBlogs = useCallback(async() => {
         try{
-            const data = await getLatestBlogs("/latest-blogs", { page })
-            const { totalBlogs } = await getAllTotalBlogs("/all-latest-blogs-count")
+            const data = await getLatestBlogs("/latest-blogs", { page: page.latestBlogs })
+            const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count")
             
             setData({
                 blogs: data.blogs,
@@ -57,16 +60,28 @@ export default function Home() {
 
     const fetchBlogByCategory = useCallback(async() => {
         try{
-            const { blogs } = await getBlogsByCategory({ tag: pageState })
-            setData(blogs)
+            const data = await getBlogsByCategory({ tag: pageState, page: page.blogsByCategory })
+            const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { tag: pageState })
+            console.log(totalBlogs)
+            setData({
+                blogs: data.blogs,
+                page: data.page,
+                totalBlogs
+            })
         }catch(err){
             return toast.error(err.response.data.message)
         }
-    }, [pageState])
+    }, [page.blogsByCategory, pageState])
 
-    const handlePagination = {
-        next: () => setPage((prev) => ++prev),
-        prev: () => setPage((prev) => --prev)
+
+    const handlePageLatestBlogs = {
+        next: () => setPage((prev) => ({ ...prev, latestBlogs: ++prev.latestBlogs })),
+        prev: () => setPage((prev) => ({ ...prev, latestBlogs: --prev.latestBlogs }))
+    }
+
+    const handlePageBlogsByCategory = {
+        next: () => setPage((prev) => ({ ...prev, blogsByCategory: ++prev.blogsByCategory })),
+        prev: () => setPage((prev) => ({ ...prev, blogsByCategory: --prev.blogsByCategory }))
     }
 
 
@@ -97,8 +112,8 @@ export default function Home() {
                             {  
                                 (!data) ? 
                                 <span>Loading ...</span> :
-                                (data.blogs.length) ?
-                                data.blogs.map((blog, i) => {
+                                (data.blogs?.length) ?
+                                data.blogs?.map((blog, i) => {
                                     return (
                                         <AnimationWrapper keyValue={ String(data.page) } key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
                                             <BlogPostCard blog={ blog } />
@@ -107,7 +122,7 @@ export default function Home() {
                                 }): <NoDataMessage message={"No blogs published"} />
                             }
 
-                            <BlogPaginationButton dataBlogs={ data } handlePagination={ handlePagination } />
+                            <BlogPaginationButton dataBlogs={ data } handlePagination={ (pageState === "home") ? handlePageLatestBlogs : handlePageBlogsByCategory } />
                         </>
 
                         {/* Ui trending blogs for mobile */}

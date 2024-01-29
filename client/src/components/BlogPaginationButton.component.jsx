@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 
 const BlogPaginationButton = ({ dataBlogs, handlePagination }) => {
 
-    const totalPage = Math.ceil(dataBlogs.totalBlogs / 5)
+    const totalPage = Math.ceil(dataBlogs?.totalBlogs / 5)
     
     return (
         (dataBlogs) && (dataBlogs.totalBlogs >= 6 ) &&

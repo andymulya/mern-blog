@@ -81,7 +81,7 @@ export const getTrendingBlogs = async (req, res, next) => {
 }
 
 export const getBlogsByCategory = async (req, res, next) => {
-    const { tag } = req.body
+    const { tag, page } = req.body
     let maxLimit = 5
 
     try{
@@ -89,6 +89,7 @@ export const getBlogsByCategory = async (req, res, next) => {
         const blogs = await Blog.find({ draft: false, tags: tag })
         .select("blogSlug title banner desc tags activity createdAt -_id")
         .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
+        .skip((page - 1) * maxLimit)
         .sort({ createdAt: -1 })
         .limit(maxLimit)
 
@@ -104,10 +105,17 @@ export const getBlogsByCategory = async (req, res, next) => {
 
 }
 
-export const getAllLatestBlogsCount = async (req, res, next) => {
-    
+export const getAllBlogsCount = async (req, res, next) => {
+    const { tag } = req.body
+    let blogCount = null
+
     try{
-        const blogCount = await Blog.countDocuments({ draft: false })
+        if(tag){
+            blogCount = await Blog.countDocuments({ draft: false, tags: tag })
+
+        }else{
+            blogCount = await Blog.countDocuments({ draft: false })
+        }
         
         res.status(200).json({
             success: true,
