@@ -18,9 +18,9 @@ export const createBlog = async (endPoint, payload) => {
     }
 }
 
-export const getLatestBlogs = async (endPoint, page) => {
+export const getLatestBlogs = async (endPoint, payload) => {
     try{
-        const res = await axios.post(`/post${endPoint}`, { page })
+        const res = await axios.post(`/post${endPoint}`, payload)
         return res.data
     }catch(err){
         if(err) throw err
@@ -39,6 +39,15 @@ export const getTrendingBlogs = async (endPoint) => {
 export const getBlogsByCategory = async (payload) => {
     try{
         const res = await axios.post(`/post/search-blogs-category`, payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}
+
+export const getAllTotalBlogs = async (endPoint, payload) => {
+    try{
+        const res = await axios.post(`/post${endPoint}`, payload)
         return res.data
     }catch(err){
         if(err) throw err

@@ -1,58 +1,76 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { AnimationWrapper } from "../components/Animations.component"
 import InPageNavigate from "../components/InPageNavigate.component"
-import { getLatestBlogs, getTrendingBlogs, getBlogsByCategory } from "../services/baseApi"
+import { getLatestBlogs, getTrendingBlogs, getBlogsByCategory, getAllTotalBlogs } from "../services/baseApi"
 import toast from "react-hot-toast"
 import BlogPostCard from "../components/BlogPostCard.component"
 import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
 import { IconBack, IconGraph, IconHome } from "../components/Icon.component"
 import NoDataMessage from "../components/NoDataMessage.component"
+import BlogPaginationButton from "../components/BlogPaginationButton.component"
 
 
 export default function Home() {
-    const [blogs, setBlogs] = useState(null)
+    const [data, setData] = useState(null)
     const [trendingBlogs, setTrendingBlogs] = useState(null)
     const [pageState, setPageState] = useState("home")
-
+    const [page, setPage] = useState(1)
     const categories = ["programming", "film making", "social media", "cooking", "tech", "finances", "travel"]
+
 
     const handleBlogByCategory = (e) => {
         const category = e.target.innerHTML.toLowerCase()
         
-        setBlogs(null)
+        setData(null)
         if(pageState === category) return setPageState("home")
 
         setPageState(category)
     }
+
+    const fetchLatestBlogs = useCallback(async() => {
+        try{
+            const data = await getLatestBlogs("/latest-blogs", { page })
+            const { totalBlogs } = await getAllTotalBlogs("/all-latest-blogs-count")
+            
+            setData({
+                blogs: data.blogs,
+                page: data.page,
+                totalBlogs
+            })
+
+            window.scrollTo(0,0)
+        }catch(err){
+            return toast.error(err.response.data.message)
+        }
+    }, [page])
+
     
+
+    const fetchTrendingBlogs = useCallback(async() => {
+        try{
+            const { blogs } = await getTrendingBlogs("/trending-blogs")
+            setTrendingBlogs(blogs)
+        }catch(err){
+            return toast.error(err.response.data.message)
+        }
+    }, [])
+
+    const fetchBlogByCategory = useCallback(async() => {
+        try{
+            const { blogs } = await getBlogsByCategory({ tag: pageState })
+            setData(blogs)
+        }catch(err){
+            return toast.error(err.response.data.message)
+        }
+    }, [pageState])
+
+    const handlePagination = {
+        next: () => setPage((prev) => ++prev),
+        prev: () => setPage((prev) => --prev)
+    }
+
 
     useEffect(() => {
-        async function fetchLatestBlogs(){
-            try{
-                const { blogs } = await getLatestBlogs("/latest-blogs")
-                setBlogs(blogs)
-            }catch(err){
-                return toast.error(err.response.data.message)
-            }
-        }
-    
-        async function fetchTrendingBlogs(){
-            try{
-                const { blogs } = await getTrendingBlogs("/trending-blogs")
-                setTrendingBlogs(blogs)
-            }catch(err){
-                return toast.error(err.response.data.message)
-            }
-        }
-
-        async function fetchBlogByCategory(){
-            try{
-                const { blogs } = await getBlogsByCategory({ tag: pageState })
-                setBlogs(blogs)
-            }catch(err){
-                return toast.error(err.response.data.message)
-            }
-        }
 
         if(pageState === "home"){
             fetchLatestBlogs()
@@ -61,8 +79,10 @@ export default function Home() {
         }
 
         if(!trendingBlogs) fetchTrendingBlogs()
-    }, [pageState, trendingBlogs])
 
+    }, [fetchBlogByCategory, fetchLatestBlogs, fetchTrendingBlogs, pageState, trendingBlogs])
+
+    
 
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
@@ -73,21 +93,25 @@ export default function Home() {
                     <InPageNavigate routes={[pageState, "trending blogs"]} defaultHiddenRoutes={["trending blogs"]} >
                         
                         {/* Latest Blogs */}
-                        {  
-                            (!blogs) ? 
-                            <span>Loading ...</span> :
-                            (blogs.length) ?
-                            blogs.map((blog, i) => {
-                                return (
-                                    <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
-                                        <BlogPostCard blog={ blog } />
-                                    </AnimationWrapper>
-                                )
-                            }): <NoDataMessage message={"No blogs published"} />
-                        }
+                        <>  
+                            {  
+                                (!data) ? 
+                                <span>Loading ...</span> :
+                                (data.blogs.length) ?
+                                data.blogs.map((blog, i) => {
+                                    return (
+                                        <AnimationWrapper keyValue={ String(data.page) } key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
+                                            <BlogPostCard blog={ blog } />
+                                        </AnimationWrapper>
+                                    )
+                                }): <NoDataMessage message={"No blogs published"} />
+                            }
+
+                            <BlogPaginationButton dataBlogs={ data } handlePagination={ handlePagination } />
+                        </>
 
                         {/* Ui trending blogs for mobile */}
-                        <div>
+                        <>
                             {
                                 (!trendingBlogs) ? 
                                 <span>Loading ...</span> :
@@ -104,14 +128,15 @@ export default function Home() {
                             }
 
                             {/* Back to home, when ui trending blogs for mobile is hidden */}
-                            <section className="flex flex-col items-center mx-auto">
+                            <section className="flex flex-col items-center mx-auto max-md:hidden">
                                 <IconHome />
                                 <div className="flex items-center font-medium">
                                     <IconBack />
                                     <span>Back to Home</span>
                                 </div>
                             </section>
-                        </div>
+                        </>
+
                     </InPageNavigate>
                 </section>
                 
