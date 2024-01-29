@@ -18,7 +18,16 @@ export const createBlog = async (endPoint, payload) => {
     }
 }
 
-export const getBlogs = async (endPoint) => {
+export const getLatestBlogs = async (endPoint, page) => {
+    try{
+        const res = await axios.post(`/post${endPoint}`, { page })
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}
+
+export const getTrendingBlogs = async (endPoint) => {
     try{
         const res = await axios.get(`/post${endPoint}`)
         return res.data

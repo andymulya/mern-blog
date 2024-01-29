@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { AnimationWrapper } from "../components/Animations.component"
 import InPageNavigate from "../components/InPageNavigate.component"
-import { getBlogs, getBlogsByCategory } from "../services/baseApi"
+import { getLatestBlogs, getTrendingBlogs, getBlogsByCategory } from "../services/baseApi"
 import toast from "react-hot-toast"
 import BlogPostCard from "../components/BlogPostCard.component"
 import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
@@ -29,7 +29,7 @@ export default function Home() {
     useEffect(() => {
         async function fetchLatestBlogs(){
             try{
-                const { blogs } = await getBlogs("/latest-blogs")
+                const { blogs } = await getLatestBlogs("/latest-blogs")
                 setBlogs(blogs)
             }catch(err){
                 return toast.error(err.response.data.message)
@@ -38,7 +38,7 @@ export default function Home() {
     
         async function fetchTrendingBlogs(){
             try{
-                const { blogs } = await getBlogs("/trending-blogs")
+                const { blogs } = await getTrendingBlogs("/trending-blogs")
                 setTrendingBlogs(blogs)
             }catch(err){
                 return toast.error(err.response.data.message)
