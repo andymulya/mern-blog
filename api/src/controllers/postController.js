@@ -33,13 +33,14 @@ export const createPost = async (req, res, next) => {
 }
 
 export const getLatestBlog = async (req, res, next) => {
-
+    const { page } = req.body
     let maxLimit = 5
 
     try{
         const blogs = await Blog.find({ draft: false })
         .select("blogSlug title banner desc tags activity createdAt -_id")
         .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
+        .skip((page - 1) * maxLimit)
         .sort({ createdAt: -1 })
         .limit(maxLimit)
 
