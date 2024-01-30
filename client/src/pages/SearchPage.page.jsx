@@ -19,7 +19,7 @@ export default function SearchPage(){
     const fecthBlogsBySearchQuery = useCallback(async () => {
         try{
             const data = await searchBlogs({ query, page: page })
-            const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { tag: query })
+            const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { query })
             
             setDataBlogs({
                 blogs: data.blogs,
@@ -52,6 +52,7 @@ export default function SearchPage(){
         fecthSearchUsersByQuery()
     }, [fecthBlogsBySearchQuery, fecthSearchUsersByQuery])
 
+    console.log(dataBlogs)
 
     return (
         <section className="h-cover py-4 px-[5vw] md:px-[7vw] lg:px-[10vw] flex gap-5">

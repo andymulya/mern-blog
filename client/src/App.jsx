@@ -13,6 +13,7 @@ import Profile from './pages/Profile.page'
 import PrivatePage from './pages/PrivatePage.page'
 import Settings from './pages/Settings.page'
 import SearchPage from './pages/SearchPage.page'
+import PageNotFound from './pages/PageNotFound.page'
 
 
 const router = createBrowserRouter(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
           <Route path="profile/:user" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
         </Route>
+        <Route path='*' element={<PageNotFound />}/>
       </Route>
       <Route element={<PrivatePage />}>
         <Route path="/editor" element={<Editor />} />
