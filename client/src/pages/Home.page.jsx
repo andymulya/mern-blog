@@ -24,6 +24,7 @@ export default function Home() {
     const handleBlogByCategory = (e) => {
         const category = e.target.innerHTML.toLowerCase()
         
+        setPage((prev) => ({ ...prev, latestBlogs: 1, blogsByCategory: 1 }))
         setData(null)
         if(pageState === category) return setPageState("home")
 
@@ -62,7 +63,7 @@ export default function Home() {
         try{
             const data = await getBlogsByCategory({ tag: pageState, page: page.blogsByCategory })
             const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { tag: pageState })
-            console.log(totalBlogs)
+            
             setData({
                 blogs: data.blogs,
                 page: data.page,

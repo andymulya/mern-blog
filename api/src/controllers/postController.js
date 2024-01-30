@@ -43,8 +43,6 @@ export const getLatestBlog = async (req, res, next) => {
         .skip((page - 1) * maxLimit)
         .sort({ createdAt: -1 })
         .limit(maxLimit)
-
-        if(!blogs) return next()
     
         res.status(200).json({
             success: true,
@@ -97,7 +95,8 @@ export const getBlogsByCategory = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Success",
-            blogs
+            blogs,
+            page
         })
     }catch(err){
         next(err)

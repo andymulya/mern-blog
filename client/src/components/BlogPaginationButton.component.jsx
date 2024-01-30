@@ -9,9 +9,9 @@ const BlogPaginationButton = ({ dataBlogs, handlePagination }) => {
     
     return (
         (dataBlogs) && (dataBlogs.totalBlogs >= 6 ) &&
-        <div className="flex gap-2 w-full items-center justify-center">
+        <div className="flex gap-4 items-center justify-between w-[60px] mx-auto">
             <button className={`py-1 px-2 bg-blue-700 rounded-full text-white ${(dataBlogs.page <= 1) && "hidden pointer-events-none"}`} onClick={ handlePagination.prev }>{"<<"}</button>
-            <span>{ dataBlogs.page }</span>
+            <span className="font-medium text-lg">{ dataBlogs.page }</span>
             <button className={`py-1 px-2 bg-blue-700 rounded-full text-white ${(dataBlogs.page >= totalPage) && "hidden pointer-events-none"}`} onClick={ handlePagination.next }>{">>"}</button>
         </div>
     )
