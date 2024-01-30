@@ -53,3 +53,12 @@ export const getAllTotalBlogs = async (endPoint, payload) => {
         if(err) throw err
     }
 }
+
+export const searchUsers = async (payload) => {
+    try{
+        const res = await axios.post(`/users/search-users`, payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}
