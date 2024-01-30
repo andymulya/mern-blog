@@ -62,3 +62,12 @@ export const searchUsers = async (payload) => {
         if(err) throw err
     }
 }
+
+export const getUserProfile = async (payload) => {
+    try{
+        const res = await axios.post(`/user/profile`, payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}
