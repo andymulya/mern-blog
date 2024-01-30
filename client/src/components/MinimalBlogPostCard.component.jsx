@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
 import BlogPostHeaderCard from "./BlogPostHeaderCard.component"
 
-const MinimalBlogPostCard = ({ blog: { blogSLug: slug, title, createdAt, author: { personalInfo } }, index }) => {
+const MinimalBlogPostCard = ({ blog: { blogSlug: slug, title, createdAt, author: { personalInfo } }, index }) => {
     
     return (
         <Link to={`/blog/${slug}`} className="flex gap-5 items-center mb-10">

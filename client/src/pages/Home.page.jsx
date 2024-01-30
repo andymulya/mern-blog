@@ -53,6 +53,7 @@ export default function Home() {
     const fetchTrendingBlogs = useCallback(async() => {
         try{
             const { blogs } = await getTrendingBlogs("/trending-blogs")
+            console.log(blogs)
             setTrendingBlogs(blogs)
         }catch(err){
             return toast.error(err.response.data.message)
