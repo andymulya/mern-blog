@@ -78,13 +78,20 @@ export const getTrendingBlogs = async (req, res, next) => {
     
 }
 
-export const getBlogsByCategory = async (req, res, next) => {
-    const { tag, page } = req.body
+export const searchBlogs = async (req, res, next) => {
+    const { tag, query, page } = req.body
+    let findQuery = {}
     let maxLimit = 5
+
+    if(tag){
+        findQuery = { draft: false, tags: tag }
+    }else if(query){
+        findQuery = { draft: false, title: new RegExp(query, 'i') }
+    }
 
     try{
 
-        const blogs = await Blog.find({ draft: false, tags: tag })
+        const blogs = await Blog.find(findQuery)
         .select("blogSlug title banner desc tags activity createdAt -_id")
         .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
         .skip((page - 1) * maxLimit)
@@ -105,12 +112,14 @@ export const getBlogsByCategory = async (req, res, next) => {
 }
 
 export const getAllBlogsCount = async (req, res, next) => {
-    const { tag } = req.body
+    const { tag, query } = req.body
     let findQuery = {}
     let blogCount = null
 
     if(tag){
         findQuery = { draft: false, tags: tag }
+    }else if(query){
+        findQuery = { draft: false, title: new RegExp(query, 'i') }
     }else{
         findQuery = { draft: false }
     }

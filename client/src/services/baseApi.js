@@ -36,9 +36,9 @@ export const getTrendingBlogs = async (endPoint) => {
     }
 }
 
-export const getBlogsByCategory = async (payload) => {
+export const searchBlogs = async (payload) => {
     try{
-        const res = await axios.post(`/post/search-blogs-category`, payload)
+        const res = await axios.post(`/post/search-blogs`, payload)
         return res.data
     }catch(err){
         if(err) throw err

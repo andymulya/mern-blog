@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { AnimationWrapper } from "../components/Animations.component"
 import InPageNavigate from "../components/InPageNavigate.component"
-import { getLatestBlogs, getTrendingBlogs, getBlogsByCategory, getAllTotalBlogs } from "../services/baseApi"
+import { getLatestBlogs, getTrendingBlogs, searchBlogs, getAllTotalBlogs } from "../services/baseApi"
 import toast from "react-hot-toast"
 import BlogPostCard from "../components/BlogPostCard.component"
 import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
@@ -62,7 +62,7 @@ export default function Home() {
 
     const fetchBlogByCategory = useCallback(async() => {
         try{
-            const data = await getBlogsByCategory({ tag: pageState, page: page.blogsByCategory })
+            const data = await searchBlogs({ tag: pageState, page: page.blogsByCategory })
             const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { tag: pageState })
             
             setData({
@@ -70,6 +70,8 @@ export default function Home() {
                 page: data.page,
                 totalBlogs
             })
+
+            window.scrollTo(0,0)
         }catch(err){
             return toast.error(err.response.data.message)
         }

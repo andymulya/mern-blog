@@ -7,7 +7,7 @@ import BlogPaginationButton from "../components/BlogPaginationButton.component"
 import NoDataMessage from "../components/NoDataMessage.component"
 import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
 import { IconBack, IconHome, IconUser } from "../components/Icon.component"
-import { getAllTotalBlogs, getBlogsByCategory } from "../services/baseApi"
+import { getAllTotalBlogs, searchBlogs } from "../services/baseApi"
 
 export default function SearchPage(){
     const [dataBlogs, setDataBlogs] = useState(null)
@@ -17,7 +17,7 @@ export default function SearchPage(){
 
     const fecthBlogsBySearchQuery = useCallback(async () => {
         try{
-            const data = await getBlogsByCategory({ tag: query, page: page })
+            const data = await searchBlogs({ query, page: page })
             const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { tag: query })
             
             setDataBlogs({
