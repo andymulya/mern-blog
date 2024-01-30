@@ -11,6 +11,7 @@ const Search = ({ isVisibility }) => {
 
         if(e.code === "Enter" && e.keyCode === 13 && query){
             navigate(`search/${query}`)
+            e.target.value = null
         }
 
     }

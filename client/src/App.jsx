@@ -12,6 +12,7 @@ import Home from './pages/Home.page'
 import Profile from './pages/Profile.page'
 import PrivatePage from './pages/PrivatePage.page'
 import Settings from './pages/Settings.page'
+import SearchPage from './pages/SearchPage.page'
 
 
 const router = createBrowserRouter(
@@ -21,7 +22,7 @@ const router = createBrowserRouter(
         <Route index element={ <Home /> } />
         <Route path="sign-in" element={<AuthForm />} />
         <Route path="sign-up" element={<AuthForm />} />
-        <Route path="search/:query" element={<h1>Search</h1>} />
+        <Route path="search/:query" element={<SearchPage />} />
         <Route element={<PrivatePage />}>
           <Route path="profile/:user" element={<Profile />} />
           <Route path="settings" element={<Settings />} />

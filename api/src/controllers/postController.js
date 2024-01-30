@@ -106,15 +106,17 @@ export const getBlogsByCategory = async (req, res, next) => {
 
 export const getAllBlogsCount = async (req, res, next) => {
     const { tag } = req.body
+    let findQuery = {}
     let blogCount = null
 
-    try{
-        if(tag){
-            blogCount = await Blog.countDocuments({ draft: false, tags: tag })
+    if(tag){
+        findQuery = { draft: false, tags: tag }
+    }else{
+        findQuery = { draft: false }
+    }
 
-        }else{
-            blogCount = await Blog.countDocuments({ draft: false })
-        }
+    try{
+        blogCount = await Blog.countDocuments(findQuery)
         
         res.status(200).json({
             success: true,

@@ -110,7 +110,7 @@ export default function Home() {
                     <InPageNavigate routes={[pageState, "trending blogs"]} defaultHiddenRoutes={["trending blogs"]} >
                         
                         {/* Latest Blogs */}
-                        <>  
+                        <section>  
                             {  
                                 (!data) ? 
                                 <span>Loading ...</span> :
@@ -125,10 +125,10 @@ export default function Home() {
                             }
 
                             <BlogPaginationButton dataBlogs={ data } handlePagination={ (pageState === "home") ? handlePageLatestBlogs : handlePageBlogsByCategory } />
-                        </>
+                        </section>
 
                         {/* Ui trending blogs for mobile */}
-                        <>
+                        <section>
                             {
                                 (!trendingBlogs) ? 
                                 <span>Loading ...</span> :
@@ -145,14 +145,14 @@ export default function Home() {
                             }
 
                             {/* Back to home, when ui trending blogs for mobile is hidden */}
-                            <section className="flex flex-col items-center mx-auto max-md:hidden">
+                            <div className="flex flex-col items-center mx-auto max-md:hidden">
                                 <IconHome />
                                 <div className="flex items-center font-medium">
                                     <IconBack />
                                     <span>Back to Home</span>
                                 </div>
-                            </section>
-                        </>
+                            </div>
+                        </section>
 
                     </InPageNavigate>
                 </section>
