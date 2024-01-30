@@ -53,7 +53,7 @@ export default function Home() {
     const fetchTrendingBlogs = useCallback(async() => {
         try{
             const { blogs } = await getTrendingBlogs("/trending-blogs")
-            console.log(blogs)
+            
             setTrendingBlogs(blogs)
         }catch(err){
             return toast.error(err.response.data.message)
@@ -161,7 +161,7 @@ export default function Home() {
                 {/* Aside */}
                 {/* filters dan trending blogs */}
                 <section className=" flex flex-col gap-10 min-w-[40%] lg:min-w-[400px] max-w-min max-md:hidden border-l border-gray-300 pl-8 pt-3">
-                    <div>
+                    <section>
                         <h1 className="text-xl font-medium mb-8">Stories from all interests</h1>
                         {
                             categories.map((cat, i) =>{
@@ -172,9 +172,9 @@ export default function Home() {
                                 )
                             })
                         }
-                    </div>
+                    </section>
 
-                    <div>
+                    <section>
                         <div className="flex items-center gap-3 mb-10">
                             <h1 className="text-xl font-medium">Trending</h1>
                             <IconGraph />
@@ -191,7 +191,7 @@ export default function Home() {
                                 )
                             }) : <NoDataMessage message={"No trending blog"} />
                         }
-                    </div>
+                    </section>
                 </section>
             </section>
         </AnimationWrapper>
