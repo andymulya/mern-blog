@@ -24,8 +24,8 @@ const router = createBrowserRouter(
         <Route path="sign-in" element={<AuthForm />} />
         <Route path="sign-up" element={<AuthForm />} />
         <Route path="search/:query" element={<SearchPage />} />
+        <Route path="profile/:id" element={<Profile />} />
         <Route element={<PrivatePage />}>
-          <Route path="profile/:user" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path='*' element={<PageNotFound />}/>

@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 
 export default function Profile() {
-    const { user } = useSelector((state) => state.user)
+    const { id: username } = useParams()
 
     return(
-        <h1>{ user.fullName }</h1>
+        <h1>{ username }</h1>
     )
 }

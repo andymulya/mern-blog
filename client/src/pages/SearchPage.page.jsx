@@ -52,7 +52,7 @@ export default function SearchPage(){
         fecthSearchUsersByQuery()
     }, [fecthBlogsBySearchQuery, fecthSearchUsersByQuery])
 
-    console.log(dataBlogs)
+
 
     return (
         <section className="h-cover py-4 px-[5vw] md:px-[7vw] lg:px-[10vw] flex gap-5">
