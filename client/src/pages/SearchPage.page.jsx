@@ -5,9 +5,10 @@ import { AnimationWrapper } from "../components/Animations.component"
 import BlogPostCard from "../components/BlogPostCard.component"
 import BlogPaginationButton from "../components/BlogPaginationButton.component"
 import NoDataMessage from "../components/NoDataMessage.component"
-import MinimalBlogPostCard from "../components/MinimalBlogPostCard.component"
 import { IconBack, IconHome, IconUser } from "../components/Icon.component"
-import { getAllTotalBlogs, searchBlogs } from "../services/baseApi"
+import { getAllTotalBlogs, searchBlogs, searchUsers } from "../services/baseApi"
+import UserCard from "../components/UserCard.component"
+
 
 export default function SearchPage(){
     const [dataBlogs, setDataBlogs] = useState(null)
@@ -30,6 +31,16 @@ export default function SearchPage(){
         }
     },[page, query])
 
+    const fecthSearchUsersByQuery = useCallback(async () => {
+        try{
+            const { users } = await searchUsers({ query })
+            setDataUsers({ users })
+        }catch(err){
+            if(err) throw err
+        }
+    },[query])
+
+
     const handlePageSearchBlogs = {
         next: () => setPage((prev) => ++prev),
         prev: () => setPage((prev) => --prev)
@@ -37,7 +48,10 @@ export default function SearchPage(){
 
     useEffect(() => {
         fecthBlogsBySearchQuery()
-    }, [fecthBlogsBySearchQuery])
+
+        fecthSearchUsersByQuery()
+    }, [fecthBlogsBySearchQuery, fecthSearchUsersByQuery])
+
 
     return (
         <section className="h-cover py-4 px-[5vw] md:px-[7vw] lg:px-[10vw] flex gap-5">
@@ -66,16 +80,16 @@ export default function SearchPage(){
                         {
                             (!dataUsers) ? 
                             <span>Loading ...</span> :
-                            (dataUsers.length) ?
-                            dataUsers.map((blog, i) => {
+                            (dataUsers.users?.length) ?
+                            dataUsers.users?.map((user, i) => {
                                 return (
                                     <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
                                         <div className="md:hidden">
-                                            <MinimalBlogPostCard blog={ blog } index={ i } />
+                                            <UserCard user={ user } />
                                         </div>
                                     </AnimationWrapper>
                                 )
-                            }): <NoDataMessage message={"No trending blogs"} />
+                            }): <NoDataMessage message={"No user found"} />
                         }
 
                         {/* Back to home, when ui trending blogs for mobile is hidden */}
@@ -83,30 +97,30 @@ export default function SearchPage(){
                             <IconHome />
                             <div className="flex items-center font-medium">
                                 <IconBack />
-                                <span>Back to Home</span>
+                                <span>Back to Results</span>
                             </div>
                         </div>
                     </section>
                 </InPageNavigate>
             </section>
 
-            <section className=" flex flex-col gap-10 min-w-[40%] lg:min-w-[400px] max-w-min max-md:hidden border-l border-gray-300 pl-8 pt-3">
+            <section className="flex flex-col min-w-[40%] lg:min-w-[300px] max-w-min max-md:hidden border-l border-gray-300 pl-8 pt-3">
                 <section>
                     <div className="flex items-center gap-3 mb-10">
-                        <h1 className="text-xl font-medium">Account Matched</h1>
+                        <h1 className="text-lg font-medium text-nowrap">Users releated to search</h1>
                         <IconUser />
                     </div>
                     {
                         (!dataUsers) ? 
                         <span>Loading ...</span> :
-                        (dataUsers.length) ?
-                        dataUsers.map((blog, i) => {
+                        (dataUsers.users.length) ?
+                        dataUsers.users.map((user, i) => {
                             return (
                                 <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
-                                    <MinimalBlogPostCard blog={ blog } index={ i } />
+                                    <UserCard user={ user } />
                                 </AnimationWrapper>
                             )
-                        }) : <NoDataMessage message={"No trending blog"} />
+                        }) : <NoDataMessage message={"No user found"} />
                     }
                 </section>
             </section>
