@@ -12,9 +12,9 @@ const iconsSocialLink = {
     website: <IconWebsite />
 }
 
-const AboutUser = ({ bio, socialLinks, createdAt }) => {
+const AboutUser = ({ bio, socialLinks, createdAt, style }) => {
     return (
-        <section className="flex flex-col gap-4 md:w-[90%] md:mt-3 max-md:hidden">
+        <section className={`flex flex-col gap-4 md:w-[90%] md:mt-3 ${ style }`}>
             <p className="text-lg leading-7 text-gray-700">{ (bio.length) ? bio : "Nothing to read here" }</p>
             <div className="flex">
                 {
@@ -24,7 +24,7 @@ const AboutUser = ({ bio, socialLinks, createdAt }) => {
                         if(link){
                         
                             return(
-                                <Link to={ link } key={ key }>
+                                <Link to={ link } key={ key } target='_blank'>
                                     { iconsSocialLink[key] }
                                 </Link>
                             )
@@ -43,5 +43,6 @@ export default AboutUser
 AboutUser.propTypes = {
     bio: PropTypes.string,
     socialLinks: PropTypes.object,
-    createdAt: PropTypes.string
+    createdAt: PropTypes.string,
+    style: PropTypes.string
 }

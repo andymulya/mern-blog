@@ -18,7 +18,7 @@ export default function SearchPage(){
 
     const fecthBlogsBySearchQuery = useCallback(async () => {
         try{
-            const data = await searchBlogs({ query, page: page })
+            const data = await searchBlogs({ query, page })
             const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { query })
             
             setDataBlogs({
