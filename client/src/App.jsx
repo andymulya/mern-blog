@@ -14,6 +14,7 @@ import PrivatePage from './pages/PrivatePage.page'
 import Settings from './pages/Settings.page'
 import SearchPage from './pages/SearchPage.page'
 import PageNotFound from './pages/PageNotFound.page'
+import BlogPage from './pages/BlogPage.page'
 
 
 const router = createBrowserRouter(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
         <Route path="sign-up" element={<AuthForm />} />
         <Route path="search/:query" element={<SearchPage />} />
         <Route path="profile/:id" element={<Profile />} />
+        <Route path="blog/:slug" element={<BlogPage />} />
         <Route element={<PrivatePage />}>
           <Route path="settings" element={<Settings />} />
         </Route>

@@ -71,3 +71,12 @@ export const getUserProfile = async (payload) => {
         if(err) throw err
     }
 }
+
+export const getDetailBlog = async (payload) => {
+    try{
+        const res = await axios.post("/post/get-blog", payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}
