@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
-import { getUserProfile } from "../services/baseApi"
+import { getUserProfile, searchBlogs } from "../services/baseApi"
 import PageNotFound from "./PageNotFound.page"
 import { AnimationWrapper } from "../components/Animations.component"
 import { IconBack, IconHome, IconPencil } from "../components/Icon.component"
 import AboutUser from "../components/AboutUser.component"
 import InPageNavigate from "../components/InPageNavigate.component"
 import NoDataMessage from "../components/NoDataMessage.component"
+import BlogPostCard from "../components/BlogPostCard.component"
+import BlogPaginationButton from "../components/BlogPaginationButton.component"
 
 const userDataStructure = {
     personalInfo: {
@@ -39,20 +41,27 @@ export default function Profile() {
     const fetchUserProfile = useCallback(async () => {
         try{
             const { user } = await getUserProfile({ username })
+            const res = await searchBlogs({ userId: user._id, page })
+            
             setUser(user)
+            setBlogs(res)
             setIsLoading(false)
         }catch(err){
             setIsLoading(false)
             setError(err.response.data)
         }
-    }, [username])
+    }, [page, username])
+
+    const handlePageBlogsUser = {
+        next: () => setPage((prev) => ++prev),
+        prev: () => setPage((prev) => --prev)
+    }
 
     useEffect(() => {
 
         setUser(userDataStructure)
         setIsLoading(true)
         fetchUserProfile()
-        
     }, [fetchUserProfile])
 
 
@@ -65,6 +74,7 @@ export default function Profile() {
                 (isLoading) ?
                 <h1>Loading ...</h1> :
                 <section className="h-cover flex flex-col max-md:gap-12 max-md:pb-5 max-md:items-center md:flex-row-reverse">
+                    
                     <section className="flex flex-col max-md:items-center gap-4 min-w-[250px] pt-10 pl-10 md:w-[40%] md:border-l md:border-gray-300">
                         <div className="aspect-square h-[12rem] w-[12rem] md:h-[10rem] md:w-[10rem] rounded-full">
                             <img src={ personalInfo.profileImg } alt={ personalInfo.fullName } className="rounded-full object-cover" />
@@ -89,12 +99,19 @@ export default function Profile() {
                         <InPageNavigate routes={["Blogs published", "About user"]} defaultHiddenRoutes={["About user"]}>
                             <section>
                                 {
-                                    (isLoading) ?
-                                    <h1>Loading ...</h1> :
-                                    (!blogs) ?
-                                    <NoDataMessage message={"No blogs published"} /> :
-                                    <div>blogs</div>
+                                    (!blogs) ? 
+                                    <span>Loading ...</span> :
+                                    (blogs.blogs.length) ?
+                                    blogs.blogs.map((blog, i) => {
+                                        return (
+                                            <AnimationWrapper keyValue={ String(page) } key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
+                                                <BlogPostCard blog={ blog } />
+                                            </AnimationWrapper>
+                                        )
+                                    }): <NoDataMessage message={"No blogs published"} />
                                 }
+
+                                <BlogPaginationButton dataBlogs={ blogs } handlePagination={ handlePageBlogsUser } />
                             </section>
 
                             <section>
@@ -111,6 +128,7 @@ export default function Profile() {
                             </section>
                         </InPageNavigate>
                     </section>
+
                 </section>
             }
         </AnimationWrapper>

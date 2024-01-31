@@ -79,16 +79,16 @@ export const getTrendingBlogs = async (req, res, next) => {
 }
 
 export const searchBlogs = async (req, res, next) => {
-    const { tag, query, author, page } = req.body
+    const { tag, query, userId, page } = req.body
     let findQuery = {}
     let maxLimit = 5
-
+    
     if(tag){
         findQuery = { draft: false, tags: tag }
     }else if(query){
         findQuery = { draft: false, title: new RegExp(query, 'i') }
-    }else if(author){
-        findQuery = { draft: false, author }
+    }else if(userId){
+        findQuery = { draft: false, author: userId }
     }
 
     try{
