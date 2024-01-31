@@ -114,7 +114,7 @@ export const searchBlogs = async (req, res, next) => {
 }
 
 export const getAllBlogsCount = async (req, res, next) => {
-    const { tag, query } = req.body
+    const { tag, userId, query } = req.body
     let findQuery = {}
     let blogCount = null
 
@@ -122,6 +122,8 @@ export const getAllBlogsCount = async (req, res, next) => {
         findQuery = { draft: false, tags: tag }
     }else if(query){
         findQuery = { draft: false, title: new RegExp(query, 'i') }
+    }else if(userId){
+        findQuery = { draft: false, author: userId }
     }else{
         findQuery = { draft: false }
     }

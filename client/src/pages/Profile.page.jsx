@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link, useParams } from "react-router-dom"
-import { getUserProfile, searchBlogs } from "../services/baseApi"
+import { getAllTotalBlogs, getUserProfile, searchBlogs } from "../services/baseApi"
 import PageNotFound from "./PageNotFound.page"
 import { AnimationWrapper } from "../components/Animations.component"
 import { IconBack, IconHome, IconPencil } from "../components/Icon.component"
@@ -41,10 +41,15 @@ export default function Profile() {
     const fetchUserProfile = useCallback(async () => {
         try{
             const { user } = await getUserProfile({ username })
-            const res = await searchBlogs({ userId: user._id, page })
+            const data = await searchBlogs({ userId: user._id, page })
+            const { totalBlogs } = await getAllTotalBlogs("/all-blogs-count", { userId: user._id })
             
             setUser(user)
-            setBlogs(res)
+            setBlogs({
+                blogs: data.blogs,
+                page: data.page,
+                totalBlogs
+            })
             setIsLoading(false)
         }catch(err){
             setIsLoading(false)
@@ -65,7 +70,6 @@ export default function Profile() {
     }, [fetchUserProfile])
 
 
-
     return(
         <AnimationWrapper keyValue={ username } transition={{ duration: 0.5 }}>
             {
@@ -73,9 +77,9 @@ export default function Profile() {
                 <PageNotFound /> :
                 (isLoading) ?
                 <h1>Loading ...</h1> :
-                <section className="h-cover flex flex-col max-md:gap-12 max-md:pb-5 max-md:items-center md:flex-row-reverse">
+                <section className="h-cover flex flex-col max-md:gap-12 pb-5 max-md:items-center md:flex-row-reverse">
                     
-                    <section className="flex flex-col max-md:items-center gap-4 min-w-[250px] pt-10 pl-10 md:w-[40%] md:border-l md:border-gray-300">
+                    <section className="flex flex-col max-md:items-center gap-4 min-w-[250px] pt-10 md:pl-14 md:w-[50%] md:border-l md:border-gray-300">
                         <div className="aspect-square h-[12rem] w-[12rem] md:h-[10rem] md:w-[10rem] rounded-full">
                             <img src={ personalInfo.profileImg } alt={ personalInfo.fullName } className="rounded-full object-cover" />
                         </div>
@@ -95,7 +99,7 @@ export default function Profile() {
                         <AboutUser bio={ personalInfo.bio } socialLinks={ socialLinks } createdAt={ createdAt } style={"max-md:hidden"} />
                     </section>
 
-                    <section className="w-full md:px-14 mt-10 max-md:px-10">
+                    <section className="w-full mt-10 max-md:px-10 pl-[5vw] md:pl-[7vw] lg:pl-[10vw] md:pr-7">
                         <InPageNavigate routes={["Blogs published", "About user"]} defaultHiddenRoutes={["About user"]}>
                             <section>
                                 {
@@ -113,7 +117,7 @@ export default function Profile() {
 
                                 <BlogPaginationButton dataBlogs={ blogs } handlePagination={ handlePageBlogsUser } />
                             </section>
-
+                                
                             <section>
                                 <AboutUser bio={ personalInfo.bio } socialLinks={ socialLinks } createdAt={ createdAt } style={"md:hidden"} />
                                 
