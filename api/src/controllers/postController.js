@@ -1,5 +1,6 @@
 import Blog from "../models/Blog.js"
 import User from "../models/User.js"
+import { errorCustomHandler } from "../utils/index.js"
 
 
 export const createPost = async (req, res, next) => {
@@ -135,6 +136,29 @@ export const getAllBlogsCount = async (req, res, next) => {
             success: true,
             message: "Success",
             totalBlogs: blogCount
+        })
+    }catch(err){
+        next(err)
+    }
+}
+
+export const getBlog = async (req, res, next) => {
+    const { slug } = req.body
+
+    try{
+        const updateTotalReads = await Blog.findOneAndUpdate({ blogSlug: slug }, { $inc: { "activity.totalReads": 1 } })
+        
+        if(!blog) return next(errorCustomHandler(404, "Blog not found"))
+        
+        const blog = await Blog.findOne({ blogSlug: updateTotalReads.blogSlug })
+        .select("-_id -draft -comments -updatedAt")
+        .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg")
+        
+        
+        res.status(200).json({
+            success: true,
+            message: "Success",
+            blog
         })
     }catch(err){
         next(err)
