@@ -84,3 +84,8 @@ export const toolsEditor = {
     },
     underline: Underline
 }
+
+export const getFullDay = (timestamp) => {
+    const date = new Date(timestamp)
+    return `${ formaterDay(timestamp) } ${ date.getFullYear() }`
+}

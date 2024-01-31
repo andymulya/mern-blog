@@ -5,6 +5,8 @@ import { getUserProfile } from "../services/baseApi"
 import PageNotFound from "./PageNotFound.page"
 import { AnimationWrapper } from "../components/Animations.component"
 import { IconPencil } from "../components/Icon.component"
+import AboutUser from "../components/AboutUser.component"
+import InPageNavigate from "../components/InPageNavigate.component"
 
 const userDataStructure = {
     personalInfo: {
@@ -47,9 +49,10 @@ export default function Profile() {
         setUser(userDataStructure)
         setIsLoading(true)
         fetchUserProfile()
+        
     }, [fetchUserProfile])
 
-    console.log(user)
+
 
     return(
         <AnimationWrapper keyValue={ username } transition={{ duration: 0.5 }}>
@@ -58,13 +61,13 @@ export default function Profile() {
                 <PageNotFound /> :
                 (isLoading) ?
                 <h1>Loading ...</h1> :
-                <section className="h-cover md:flex md:flex-row-reverse md:items-start">
-                    <div className="flex flex-col max-md:items-center gap-4 min-w-[250px] pt-10">
-                        <div className="aspect-square max-h-[12rem] max-w-[12rem] rounded-full">
+                <section className="h-cover pt-10 gap-12 flex flex-col max-md:items-center md:flex-row-reverse">
+                    <section className="flex flex-col max-md:items-center gap-4 min-w-[250px]">
+                        <div className="aspect-square h-[12rem] w-[12rem] md:h-[10rem] md:w-[10rem] rounded-full">
                             <img src={ personalInfo.profileImg } alt={ personalInfo.fullName } className="rounded-full object-cover" />
                         </div>
-                        
-                        <div className="flex items-center gap-3 mt-4">
+
+                        <div className="flex items-center gap-2 mt-4">
                             <h1 className="text-xl font-medium">@{ personalInfo.username }</h1>
                             {
                                 (data.user?.token) && (data.user?.username === username) && 
@@ -76,7 +79,12 @@ export default function Profile() {
 
                         <span className="text-gray-600 capitalize">{ personalInfo.fullName }</span>
                         <span className="text-gray-600">{ accountInfo.totalPost.toLocaleString() } Blogs - { accountInfo.totalReads.toLocaleString() } Reads</span>
-                    </div>
+                        <AboutUser bio={ personalInfo.bio } socialLinks={ socialLinks } createdAt={ createdAt } />
+                    </section>
+
+                    <section className="w-full">
+                        
+                    </section>
                 </section>
             }
         </AnimationWrapper>

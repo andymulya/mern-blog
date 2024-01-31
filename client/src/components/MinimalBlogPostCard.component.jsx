@@ -5,13 +5,15 @@ import BlogPostHeaderCard from "./BlogPostHeaderCard.component"
 const MinimalBlogPostCard = ({ blog: { blogSlug: slug, title, createdAt, author: { personalInfo } }, index }) => {
     
     return (
-        <Link to={`/blog/${slug}`} className="flex gap-5 items-center mb-10">
+        <div className="flex gap-5 items-center mb-10">
             <span className="font-semibold text-5xl text-gray-200 p-5 rounded-full">{`0${ index + 1 }`}</span>
             <div>
                 <BlogPostHeaderCard fullName={ personalInfo.fullName } username={ personalInfo.username } profileImg={ personalInfo.profileImg } timestamp={ createdAt } />
-                <h1 className="line-clamp-2 font-semibold text-xl">{ title }</h1>
+                <Link to={`/blog/${slug}`}>
+                    <h1 className="line-clamp-2 font-semibold text-xl">{ title }</h1>
+                </Link>
             </div>
-        </Link>
+        </div>
     )
 }
 
