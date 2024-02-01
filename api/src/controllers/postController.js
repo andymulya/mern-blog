@@ -62,7 +62,7 @@ export const getTrendingBlogs = async (req, res, next) => {
         const blogs = await Blog.find({ draft: false })
         .select("blogSlug title createdAt -_id")
         .populate("author", "personalInfo.fullName personalInfo.username personalInfo.profileImg -_id")
-        .sort({"activity.totalRead": -1, "activity.totalLike": -1, createdAt: -1})
+        .sort({"activity.totalReads": -1, "activity.totalLikes": -1, createdAt: -1})
         .limit(5)
 
         if(!blogs) return next()
@@ -153,6 +153,7 @@ export const getBlog = async (req, res, next) => {
         if(!blog) return next(errorCustomHandler(404, "Blog not found"))
         
         await Blog.findOneAndUpdate({ blogSlug: blog.blogSlug }, { $inc: { "activity.totalReads": 1 } })
+        await User.findOneAndUpdate({ "personalInfo.username": blog.author.personalInfo.username }, { $inc: { "accountInfo.totalReads": 1 } })
         
         
         res.status(200).json({

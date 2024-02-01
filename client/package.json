@@ -24,6 +24,7 @@
     "@editorjs/simple-image": "^1.6.0",
     "@editorjs/table": "^2.3.0",
     "@editorjs/underline": "^1.1.0",
+    "@flaticon/flaticon-uicons": "^3.1.0",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.5",
     "firebase": "^10.7.2",

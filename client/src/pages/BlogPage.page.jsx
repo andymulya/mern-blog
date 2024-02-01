@@ -1,13 +1,29 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { AnimationWrapper } from "../components/Animations.component"
 import { useCallback, useEffect, useState } from "react"
 import { getDetailBlog } from "../services/baseApi"
 import PageNotFound from "./PageNotFound.page"
+import { formaterDay } from "../utils"
+import BlogInteraction from "../components/BlogInteraction.component"
+
+
+const dataBlogStructure = {
+    activity: {},
+    author: { personalInfo: {} },
+    banner: "",
+    title: "",
+    createdAt: "",
+    desc: "",
+}
+
 
 export default function BlogPage (){
     const { slug } = useParams()
     const [isLoading, setIsLoading] = useState(false)
-    const [detailBlog, setDetailBlog] = useState(null)
+    const [detailBlog, setDetailBlog] = useState(dataBlogStructure)
+    const [error, setError] = useState(null)
+
+    const { banner, title, desc, blogSlug, activity, author: { personalInfo }, createdAt } = detailBlog
 
     
     const fetchDetailBlog = useCallback(async () => {
@@ -18,7 +34,7 @@ export default function BlogPage (){
             setIsLoading(false)
         }catch(err){
             setIsLoading(false)
-            console.log(err)
+            setError(err.response.data)
         }
     }, [slug])
 
@@ -26,17 +42,36 @@ export default function BlogPage (){
         fetchDetailBlog()
     }, [fetchDetailBlog])
 
+
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
-            <section className="h-cover px-[5vw] md:px-[7vw] lg:px-[10vw] pt-10">
-                {
-                    (isLoading) ?
-                    <h1>Loading ...</h1> :
-                    (!detailBlog) ?
-                    <PageNotFound /> :
-                    <h1>{ detailBlog.title }</h1>
-                }
-            </section>
+            {
+                (isLoading) ?
+                <h1>Loading ...</h1> :
+                (error?.statusCode === 404) ?
+                <PageNotFound /> :
+                <article className="h-cover mx-auto py-10 max-w-[800px] max-lg:px-[5vw]">
+                    <img src={ banner } className="aspect-video mx-auto" />
+
+                    <section className="mt-12">
+                        <h2>{ title }</h2>
+
+                        <div className="mt-12 flex gap-5">
+                            <img src={ personalInfo.profileImg } className="rounded-full w-12 h-12" />
+                            
+                            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5 w-full">
+                                <Link to={`/profile/@${ personalInfo.username }`}>
+                                    <h1 className="font-medium">{ personalInfo.fullName }</h1>
+                                    <span className="text-sm text-gray-600">@{ personalInfo.username }</span>
+                                </Link>
+                                <span className="text-sm text-gray-600" >Published on { formaterDay(createdAt) }</span>
+                            </div>
+                        </div>
+
+                        <BlogInteraction title={ title } slug={ blogSlug } blogActivity={ activity } username={ personalInfo.username } />
+                    </section>
+                </article>
+            }
         </AnimationWrapper>
     )
 }
