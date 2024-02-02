@@ -1,10 +1,11 @@
 import { Link, useParams } from "react-router-dom"
 import { AnimationWrapper } from "../components/Animations.component"
 import { useCallback, useEffect, useState } from "react"
-import { getDetailBlog } from "../services/baseApi"
+import { getDetailBlog, searchBlogs } from "../services/baseApi"
 import PageNotFound from "./PageNotFound.page"
 import { formaterDay } from "../utils"
 import BlogInteraction from "../components/BlogInteraction.component"
+import BlogPostCard from "../components/BlogPostCard.component"
 
 
 const dataBlogStructure = {
@@ -21,6 +22,7 @@ export default function BlogPage (){
     const { slug } = useParams()
     const [isLoading, setIsLoading] = useState(false)
     const [detailBlog, setDetailBlog] = useState(dataBlogStructure)
+    const [similarBlog, setSimilarBlog] = useState([])
     const [error, setError] = useState(null)
 
     const { banner, title, desc, blogSlug, activity, author: { personalInfo }, createdAt } = detailBlog
@@ -30,7 +32,9 @@ export default function BlogPage (){
         try{
             setIsLoading(true)
             const { blog } = await getDetailBlog({ slug })
+            const similarBlog = await searchBlogs({ tag: blog.tags[0], eleminateBlog: blog.blogSlug, limit: 2 })
             setDetailBlog(blog)
+            setSimilarBlog(similarBlog.blogs)
             setIsLoading(false)
         }catch(err){
             setIsLoading(false)
@@ -38,10 +42,12 @@ export default function BlogPage (){
         }
     }, [slug])
 
+
     useEffect(() => {
         fetchDetailBlog()
     }, [fetchDetailBlog])
 
+    console.log(similarBlog)
 
     return (
         <AnimationWrapper transition={{ duration: 0.5 }}>
@@ -69,6 +75,24 @@ export default function BlogPage (){
                         </div>
 
                         <BlogInteraction title={ title } slug={ blogSlug } blogActivity={ activity } username={ personalInfo.username } />
+
+                        {
+                            (similarBlog.length) ? 
+                            <section className="mt-10">
+                                <h1 className="text-xl font-medium mb-10">Similar Blogs</h1>
+                                {
+                                    
+                                    similarBlog.map((blog, i) => {
+                                        return (
+                                            <AnimationWrapper key={ i } transition={{ duration: 0.5, delay: i*.1 }} >
+                                                <BlogPostCard blog={ blog } />
+                                            </AnimationWrapper>
+                                        )
+                                    })
+                                }
+                            </section> : ""
+                        }
+                        
                     </section>
                 </article>
             }
