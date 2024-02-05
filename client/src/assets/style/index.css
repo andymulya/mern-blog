@@ -9,11 +9,11 @@
     }
 
     h3 {
-        @apply text-2xl leading-snug font-medium max-md:text-xl max-md:leading-tight !important;
+        @apply text-2xl leading-normal font-medium max-md:text-xl max-md:leading-snug !important;
     }
 
     h4 {
-        @apply text-xl leading-tight font-medium max-md:text-lg max-md:leading-tight !important;
+        @apply text-xl leading-normal font-medium max-md:text-lg max-md:leading-snug !important;
     }
 }
 

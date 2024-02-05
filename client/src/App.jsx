@@ -34,6 +34,7 @@ const router = createBrowserRouter(
       </Route>
       <Route element={<PrivatePage />}>
         <Route path="/editor" element={<Editor />} />
+        <Route path="/editor/:slug" element={<Editor />} />
       </Route>
     </Route>
   )

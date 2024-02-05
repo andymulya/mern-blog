@@ -6,6 +6,7 @@ import PageNotFound from "./PageNotFound.page"
 import { formaterDay } from "../utils"
 import BlogInteraction from "../components/BlogInteraction.component"
 import BlogPostCard from "../components/BlogPostCard.component"
+import BlogDetailBody from "../components/BlogDetailBody.component"
 
 
 const dataBlogStructure = {
@@ -25,14 +26,14 @@ export default function BlogPage (){
     const [similarBlog, setSimilarBlog] = useState([])
     const [error, setError] = useState(null)
 
-    const { banner, title, desc, blogSlug, activity, author: { personalInfo }, createdAt } = detailBlog
+    const { banner, title, blogSlug, activity, author: { personalInfo }, createdAt } = detailBlog
 
     
     const fetchDetailBlog = useCallback(async () => {
         try{
             setIsLoading(true)
             const { blog } = await getDetailBlog({ slug })
-            const similarBlog = await searchBlogs({ tag: blog.tags[0], eleminateBlog: blog.blogSlug, limit: 2 })
+            const similarBlog = await searchBlogs({ tag: blog.tags[0], eleminateBlog: blog.blogSlug, limit: 6 })
             setDetailBlog(blog)
             setSimilarBlog(similarBlog.blogs)
             setIsLoading(false)
@@ -47,10 +48,10 @@ export default function BlogPage (){
         fetchDetailBlog()
     }, [fetchDetailBlog])
 
-    console.log(similarBlog)
+    console.log(detailBlog)
 
     return (
-        <AnimationWrapper transition={{ duration: 0.5 }}>
+        <AnimationWrapper keyValue={ detailBlog.title } transition={{ duration: 0.5 }}>
             {
                 (isLoading) ?
                 <h1>Loading ...</h1> :
@@ -60,7 +61,7 @@ export default function BlogPage (){
                     <img src={ banner } className="aspect-video mx-auto" />
 
                     <section className="mt-12">
-                        <h2>{ title }</h2>
+                        <h1 className="font-bold text-3xl md:text-4xl">{ title }</h1>
 
                         <div className="mt-12 flex gap-5">
                             <img src={ personalInfo.profileImg } className="rounded-full w-12 h-12" />
@@ -73,6 +74,16 @@ export default function BlogPage (){
                                 <span className="text-sm text-gray-600" >Published on { formaterDay(createdAt) }</span>
                             </div>
                         </div>
+
+                        <BlogInteraction title={ title } slug={ blogSlug } blogActivity={ activity } username={ personalInfo.username } />
+                        
+                        {
+                            (detailBlog.body) && detailBlog.body.map((block, i) => {
+                                return (
+                                    <BlogDetailBody key={ i } block={ block } />
+                                )
+                            })
+                        }
 
                         <BlogInteraction title={ title } slug={ blogSlug } blogActivity={ activity } username={ personalInfo.username } />
 
