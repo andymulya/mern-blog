@@ -60,7 +60,7 @@ const PublishForm = () => {
             if(slug){
                 await updateBlog({ ...post, draft: false })
             }else{
-                await createBlog("/create-post", { ...post, draft: false })
+                await createBlog("/create-blog", { ...post, draft: false })
             }
             setIsLoading(false)
             toast.dismiss(loading)
