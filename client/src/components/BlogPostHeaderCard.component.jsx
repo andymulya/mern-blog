@@ -7,7 +7,7 @@ const BlogPostHeaderCard = ({ fullName, username, profileImg, timestamp }) => {
         
         <Link to={`/profile/@${ username }`}>
             <div className="flex gap-2 items-center mb-5 text-sm md:text-base">
-                    <img src={ profileImg } alt={ fullName } className="w-7 rounded-full" />
+                    <img src={ profileImg } referrerPolicy="origin-when-cross-origin" alt={ fullName } className="w-7 rounded-full" />
                     <span className="line-clamp-1">{ `${fullName} @${username}` }</span>
                 <span className="min-w-fit">{ formaterDay(timestamp) }</span>
             </div>

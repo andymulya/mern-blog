@@ -48,7 +48,6 @@ export default function BlogPage (){
         fetchDetailBlog()
     }, [fetchDetailBlog])
 
-    console.log(detailBlog)
 
     return (
         <AnimationWrapper keyValue={ detailBlog.title } transition={{ duration: 0.5 }}>

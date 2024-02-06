@@ -23,10 +23,7 @@ export const createPost = async (req, res, next) => {
         res.status(201).json({
             success: true,
             statusCode: 201,
-            message: "Created is succesfully",
-            data:{
-                slug: blog.blogSlug
-            }
+            message: "Created is succesfully"
         })
     }catch(err){
         next(err)
@@ -143,7 +140,7 @@ export const getAllBlogsCount = async (req, res, next) => {
 }
 
 export const getBlog = async (req, res, next) => {
-    const { slug } = req.body
+    const { slug, mode } = req.body
 
     try{
         const blog = await Blog.findOne({ blogSlug: slug })
@@ -152,14 +149,31 @@ export const getBlog = async (req, res, next) => {
         
         if(!blog) return next(errorCustomHandler(404, "Blog not found"))
         
-        await Blog.findOneAndUpdate({ blogSlug: blog.blogSlug }, { $inc: { "activity.totalReads": 1 } })
-        await User.findOneAndUpdate({ "personalInfo.username": blog.author.personalInfo.username }, { $inc: { "accountInfo.totalReads": 1 } })
-        
+        if(mode !== "edit"){
+            await Blog.findOneAndUpdate({ blogSlug: blog.blogSlug }, { $inc: { "activity.totalReads": 1 } })
+            await User.findOneAndUpdate({ "personalInfo.username": blog.author.personalInfo.username }, { $inc: { "accountInfo.totalReads": 1 } })
+        }
         
         res.status(200).json({
             success: true,
             message: "Success",
             blog
+        })
+    }catch(err){
+        next(err)
+    }
+}
+
+export const updateBlog = async (req, res, next) => {
+    const { blogSlug: oldBlogSlug } = req.body
+    const { blogSlug: newBlogSlug, title, banner, desc, body, tags, author, draft } = req.post
+
+    try{
+        await Blog.findOneAndUpdate({ blogSlug: oldBlogSlug }, { blogSlug: newBlogSlug, title, banner, desc, body, tags })
+
+        res.status(200).json({
+            success: true,
+            message: "Update success"
         })
     }catch(err){
         next(err)

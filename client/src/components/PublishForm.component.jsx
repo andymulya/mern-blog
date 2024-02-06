@@ -5,13 +5,14 @@ import { setDataPost, setInitDataPost } from "../redux/slices/postSlice"
 import TagWithDelete from "./TagWithDelete.component"
 import toast from "react-hot-toast"
 import { useState } from "react"
-import { createBlog } from "../services/baseApi"
-import { useNavigate } from "react-router-dom"
+import { createBlog, updateBlog } from "../services/baseApi"
+import { useNavigate, useParams } from "react-router-dom"
 
 
 const PublishForm = () => {
     const post = useSelector((state) => state.post)
     const navigate = useNavigate()
+    const { slug } = useParams()
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
     const characterLimitDesc = 200
@@ -54,8 +55,13 @@ const PublishForm = () => {
         const loading = toast.loading("Publishing....")
 
         try{
+
             setIsLoading(true)
-            await createBlog("/create-post", { ...post, draft: false })
+            if(slug){
+                await updateBlog({ ...post, draft: false })
+            }else{
+                await createBlog("/create-post", { ...post, draft: false })
+            }
             setIsLoading(false)
             toast.dismiss(loading)
             toast.success("Published")

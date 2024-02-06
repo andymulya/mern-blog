@@ -80,3 +80,12 @@ export const getDetailBlog = async (payload) => {
         if(err) throw err
     }
 }
+
+export const updateBlog = async (payload) => {
+    try{
+        const res = await axios.patch("/post/update-blog", payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}
