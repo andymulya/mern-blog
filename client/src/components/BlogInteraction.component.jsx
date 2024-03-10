@@ -1,16 +1,29 @@
 import { useSelector } from "react-redux"
+import toast from 'react-hot-toast'
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
 
 
 const BlogInteraction = ({ title, slug, blogActivity: { totalLikes, totalComments }, username }) => {
     const { user } = useSelector((state) => state.user)
+    const [totalLikesState, setTotalLikesState] = useState(totalLikes)
+
+    const handleLike = () => {
+        if(!user.username) return toast.error("Please login to like this blog")
+        console.log("liked")
+        setTotalLikesState(prev => ++prev)
+    }
+
+    useEffect(() => {
+        console.log(totalLikesState)
+    }, [totalLikesState])
 
     return(
         <div className="flex items-center justify-between mt-5 border-y border-gray-300 mb-5 py-2 px-3">
             <div className="flex items-center gap-5">
-                <ButtonInteraction activity={ totalLikes }>
-                    <i className="fi fi-rs-heart hover:text-red-500" />
+                <ButtonInteraction activity={ totalLikesState } handleOnClick={ handleLike } style={"hover:text-red-500 hover:bg-red-500/20"} >
+                    <i className="fi fi-rs-heart"/>
                 </ButtonInteraction>
 
                 <ButtonInteraction activity={ totalComments }>
@@ -43,10 +56,10 @@ BlogInteraction.propTypes = {
 }
 
 
-const ButtonInteraction = ({ activity, children }) => {
+const ButtonInteraction = ({ activity, children, style, handleOnClick = () => {} }) => {
     return (
         <div className="flex items-center gap-2">
-            <button className="flexjustify-center text-xl w-10 h-10 bg-gray-100 rounded-full">
+            <button className={`flex justify-center pt-[6px] pb-[3px] px-[10px] items-center text-lg bg-gray-100 rounded-full ${ style }`} onClick={ handleOnClick }>
                 { children }
             </button>
             <span>{ activity }</span>
@@ -56,6 +69,8 @@ const ButtonInteraction = ({ activity, children }) => {
 
 ButtonInteraction.propTypes = {
     activity: PropTypes.number,
-    children: PropTypes.object
+    children: PropTypes.object,
+    style: PropTypes.string,
+    handleOnClick: PropTypes.func,
 }
 

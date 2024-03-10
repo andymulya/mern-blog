@@ -3,8 +3,8 @@ import PropTypes from "prop-types"
 
 const ImgWCaption = ({ url, caption }) => {
     return(
-        <section className="my-5">
-            <img src={ url } alt={ caption } />
+        <section className="my-5 w-full">
+            <img src={ url } alt={ caption } className="m-auto" />
             {
                 (caption) && 
                 <p dangerouslySetInnerHTML={{ __html: caption }} className="w-full text-center my-3 md:mb-12 text-base text-gray-400 inline-block" />
