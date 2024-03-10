@@ -89,3 +89,12 @@ export const updateBlog = async (payload) => {
         if(err) throw err
     }
 }
+
+export const likeBlog = async (payload) => {
+    try{
+        const res = await axios.patch("post/like-blog", payload)
+        return res.data
+    }catch(err){
+        if(err) throw err
+    }
+}

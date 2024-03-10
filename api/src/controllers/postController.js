@@ -179,3 +179,26 @@ export const updateBlog = async (req, res, next) => {
         next(err)
     }
 }
+
+export const likeBlog = async (req, res ,next) => {
+    const userId = req.userId
+    const { slug, totalLikesState } = req.body
+
+    const findUserBlog = await Blog.findOne({ blogSlug: slug, author: userId})
+
+    try{
+        if(!findUserBlog){
+            await Blog.findOneAndUpdate({ blogSlug: slug }, { "activity.totalLikes": totalLikesState })
+            console.log(totalLikesState)
+            res.status(200).json({
+                success: true,
+                message: "Like success"
+            })
+        }else{
+            next(errorCustomHandler(403, "You can't like your own blog"))
+        }
+    }catch(err){
+        next(err)
+    }
+    
+}
