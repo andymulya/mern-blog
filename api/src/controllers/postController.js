@@ -189,7 +189,7 @@ export const likeBlog = async (req, res ,next) => {
     try{
         if(!findUserBlog){
             await Blog.findOneAndUpdate({ blogSlug: slug }, { "activity.totalLikes": totalLikesState })
-            console.log(totalLikesState)
+            
             res.status(200).json({
                 success: true,
                 message: "Like success"
