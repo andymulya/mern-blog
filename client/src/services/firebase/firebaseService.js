@@ -8,11 +8,11 @@ import { generateFileName } from "../../utils"
 export const googleAuth = async () => {
     
     try{
-        const provider = new GoogleAuthProvider();
+        const provider = new GoogleAuthProvider()
         const res = await signInWithPopup(auth, provider)
         return res
     }catch(err){
-        if(err) throw err
+        if(err) return err
     }
 }
 

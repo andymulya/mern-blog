@@ -54,7 +54,9 @@ export default function AuthForm(){
             setIsLoading(false)
             setTimeout(() => navigate('/'), 1000)
         }catch(err){
-            toast.error(err.response.data.message)
+            if(err.response){
+                toast.error(err.response.data.message)
+            }
             setIsLoading(false)
         }
     }
