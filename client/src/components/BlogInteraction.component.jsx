@@ -34,7 +34,7 @@ const BlogInteraction = ({ title, slug, blogActivity: { totalLikes, totalComment
     return(
         <div className="flex items-center justify-between mt-5 border-y border-gray-300 mb-5 py-2 px-3">
             <div className="flex items-center gap-5">
-                <ButtonInteraction isDisable = { likeRes.statusCode === 403 && likeRes.message } activity={ totalLikesState } handleOnClick={ handleLike } style={"hover:text-red-500 hover:bg-red-500/20"} >
+                <ButtonInteraction activity={ totalLikesState } handleOnClick={ handleLike } style={"hover:text-red-500 hover:bg-red-500/20"} >
                     <i className="fi fi-rs-heart"/>
                 </ButtonInteraction>
 
